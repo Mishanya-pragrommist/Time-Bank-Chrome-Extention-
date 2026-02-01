@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Банк времени",
+    "description": "Расширение, упрощающее контроль времени в соцсетях",
+    "version": "1.0.0",
+    
+    "icons": {
+        "32": "extention/images/icons/icon 32px.png",
+        "64": "extention/images/icons/icon 64px.png",
+        "128": "extention/images/icons/icon 128px.png",
+        "256": "extention/images/icons/icon 256px.png"
+    },
+    "action": {
+        "default_popup": "extention/html/main.html"
+    },
+    "permissions": [],
+    "background": {}
+}

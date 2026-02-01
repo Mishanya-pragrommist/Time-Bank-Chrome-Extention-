@@ -1,0 +1,689 @@
+/*For correct paddings*/
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #9AE98E;
+    width: 770px;
+    height: 560px;
+    border: 2px outset black;
+    font-family: 'Noto Sans';
+}
+
+/*=== Utilities (like centering elements, buttons etc) ===*/
+
+/*For columns with centered elements*/
+.centered-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*Default button*/
+button {
+    --main-color: #c7c7c7;
+    --shadow-color: #2f2f2f;
+    
+    cursor: pointer;
+    
+    transition: 0.05s;
+    background-color: var(--main-color);
+    box-shadow: var(--shadow-color) 3px 3px;
+    border: none;
+    border-radius: 8px;
+    
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    text-shadow: #7a3c3c 0 2px 1px;
+}
+button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-color) 5px 5px;
+}
+button:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}
+
+    /*Color variations of buttons*/
+.green-button {
+    --main-color: #39BF44;
+    --shadow-color: #006B09;
+}
+.red-button {
+    --main-color: #FF4040;
+    --shadow-color: #730000;
+}
+.orange-button {
+    --main-color: #FAAA3A;
+    --shadow-color: #8F5402;
+}
+
+/*General colors*/
+
+.light-green {
+    background-color: #D7FFD1;
+}
+.light-yellow {
+    background-color: #FFFBA9;
+}
+.light-blue {
+    background-color: #EDFCFF;    
+}
+.blue {
+    background-color: #8EE9E1;
+}
+
+.white-background {
+    background-color: white; 
+}
+
+.red {
+    background-color: #FA0000;
+}
+
+/* Shadows */
+.light-shadow {
+    --shadow-color: rgba(0, 0, 0, 0.40);
+    box-shadow: var(--shadow-color) 0 3px 3px;
+}
+
+.medium-shadow {
+    --shadow-color: rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-color) 0 4px 5px;
+}
+
+/*Headers*/
+h1, h2, h3 {
+    margin: 0;
+}
+h1 {
+    font-size: 30px; 
+    text-align: center;
+    margin: 0;
+}
+h2 {
+    font-size: 20px;
+}
+h3 { 
+    width: 100%;
+    font-size: 20px;
+    margin: 0;
+    text-align: left;
+    text-indent: 1.7em;
+}
+
+/*Regular text*/
+p {
+    font-size: 16px;
+}
+
+/* Navigation bar */
+.navigation-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    width: auto;
+    height: 80px;
+    gap: 5px;
+    padding: 5px;
+    
+    background-color: #57CB70;
+}
+.navigation-bar .elem {
+    width: 100%;
+    height: fit-content;
+    align-content: center;
+    text-align: center;
+    
+    font-size: 20px;
+    font-style: Italic;
+    font-weight: bold;
+    text-decoration: none;
+    
+    color: black;
+}
+.navigation-bar .elem:hover {
+    color: white;
+    -webkit-text-stroke-color: black;
+    -webkit-text-stroke-width: 1px;
+    transition: 0.1s;
+    cursor: default;
+}
+.navigation-bar .elem:active {
+    -webkit-text-stroke-width: 0;
+    text-shadow: #0030B3 0 0 10px; 
+}
+
+/*Main block of each page*/
+main {
+    margin: 15px;
+    width: 96%;
+    height: auto;
+}
+
+
+/*========== Popups ==========*/
+
+.popup {
+    width: 400px;
+    height: auto;
+    justify-content: center;
+}
+
+.popup h1 {
+    font-size: 40px;
+}
+
+.timeout-header {
+    padding: 5px;
+    width: 100%;
+    height: auto;
+    
+    border-radius: 8px;
+}
+
+.time-to-leave-text {
+    width: 100%;
+    height: 70px;;
+    border-radius: 8px;
+    text-align: center;
+    align-content: center;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.ok-button {
+    width: 100%;
+    height: 45px;
+}
+
+.reminder-text {
+    font-size: 16px;
+    height: 70px;
+    margin: 15px 0;
+    border-radius: 8px;
+    text-align: center;
+    
+}
+.reminder-text p {
+    margin: 0;
+    font-weight: 700;
+}
+
+
+.your-credit-text {
+    text-align: center;
+    font-weight: 600;
+    padding: 4px;
+}
+
+
+/*Popus for timers being stopped*/
+.pause-popup {
+    gap: 8px;
+}
+
+
+.pause-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    height: 55px;
+}
+
+.pause-buttons button {
+    width: 100%;
+    height: 100%;
+    
+}
+
+/*Text "If you finish the work fully,
+ *  you will receive (bonus)"*/
+.finish-wm-text {
+    text-align: center;
+    margin: 0;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+
+/*========== 1) Main page ==========*/
+
+.current-account-block {
+    width: 320px;
+    height: 100%;
+    justify-content: space-around;
+    padding: 10px;
+    gap: 50px;
+    
+    border-radius: 24px;
+}
+
+/*Left block of page*/
+.current-account {
+    width: 100%;
+    height: auto;
+    gap: 10px;
+}
+
+.account {
+    width: 308px;
+    height: 110px;
+    text-align: center;
+    align-content: center;
+    
+    font-size: 64px;
+    font-weight: 900;
+    color: white;
+    
+    background: linear-gradient(#64F24E, #0CD8C7);
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+    
+    border-radius: 8px;
+    transition: 0.1s;
+}
+
+.account:hover {
+    transform: translateY(-2px);
+}
+
+.add-button {
+    width: 200px; 
+    height: 55px;
+}
+
+/*Bonus account*/
+.current-account-block .bonus {
+    width: 100%;
+    height: auto;
+}
+.bonus-account {
+    width: 210px;
+    height: auto;
+    text-align: center;
+    font-size: 40px;
+    border: 3px solid #000000;
+    border-radius: 8px;
+    background-color: #FFFBA9;
+    
+    transition: 0.1s;
+}
+
+.bonus-account:hover {
+    transform: translateY(-2px);
+}
+
+/* == Timer == */
+
+.timer-block {
+    width: 380px;
+    height: auto;
+    
+    gap: 10px;
+    padding: 20px 15px;
+    border-radius: 24px;
+}
+.timer {
+    background-color: #FFF67E;
+    width: 347px;
+    height: 220px;
+    border-radius: 810px;
+    
+    font-size: 70px;
+    text-align: center;
+    align-content: center;
+    
+    transition: 0.2s;
+}
+.timer:hover {
+    text-decoration: 4px underline;
+    box-shadow: var(--shadow-color) 0 6px 6px;
+}
+
+/*Buttons for starting/stopping timer, and presets*/
+.buttons-block {
+    gap: 10px;
+}
+
+.buttons-block .main-buttons {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.buttons-block .main-buttons button {
+    width: 100%;
+    height: 100%;
+}
+
+.buttons-block .presets-block {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 10px;
+    height: auto;
+}
+
+.presets-block .first-row {
+    display: flex;
+    width: 100%;
+    gap: 5px
+}
+
+.presets-block .preset {
+    width: 100%;
+    height: 42px;
+}
+
+/*Button to use all current time*/
+.presets-block .all-acc-button {
+    width: 100%;
+    height: 42px;
+}
+
+
+/*========== 2) Black list ==========*/
+.big-header {
+    width: 400px;
+    height: 45px;
+    margin: 10px;
+    align-content: center;
+    text-align: center;
+    
+    border-radius: 8px;
+}
+
+.bl-main-block {
+    width: 700px;
+    height: 380px;
+    border-radius: 8px;
+    padding: 10px 0;
+    justify-content: space-between;
+}
+
+/*Wrap to create scroll inside the table*/
+.bl-main-block .table-wrap {
+    border: 2px solid black;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 280px;
+    max-height: 280px;
+    background-color: white;
+}
+.bl-main-block .list-table {
+    width: 660px;
+    height: auto;
+    max-height: 280px;
+    padding: 10px;
+}
+
+/*Table Row*/
+.list-table tr td {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    height: 40px;
+    padding: 5px;
+    border-bottom: 2px solid purple;
+}
+
+/*Temporary used. It'll be changed when JS is used*/
+.icon {
+    border: 2px solid red;
+    --size: 32px;
+    width: var(--size);
+    height: var(--size);
+}
+
+/*Social Media link*/
+.list-table tr td .sm-link {
+    width: 100%;
+    max-width: 430px;
+    font-size: 20px;
+    text-decoration: underline;
+}
+
+/*Buttons inside table*/
+.list-table tr td button {
+    width: 126px;
+    height: 100%;
+    font-size: 20px;
+}
+
+/*Buttons to add link and clear table*/
+.bl-main-block .buttons-block {
+    width: 382px;
+    height: 55px;
+    display: flex;
+    justify-content: space-between;
+}
+.buttons-block button {
+    width: 100%;
+    height: auto;
+}
+
+
+/*========== 3) Settings ==========*/
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    
+    width: 100%;
+    height: 250px;
+    
+    margin: 10px 0 10px;
+}
+
+.limit {
+    width: 340px;
+    height: 100%;
+    border-radius: 16px;
+    gap: 10px;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.limit .bonus {
+    background: none;
+    background-color: #FFFBA9;
+    border: 3px solid black;
+}
+
+.limit button {
+    width: 200px;
+    height: 40px;
+}
+
+/* Notification time */
+
+.notifications-settings {
+    justify-content: space-around;
+    width: 600px;
+    padding: 10px;
+    gap: 10px;
+    height: 128px;
+    border-radius: 16px;
+}
+
+.notifications-settings h1 {
+    margin: 0;
+}
+
+.slider-container {
+    background-color: white;
+    width: 500px;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+/*Slider*/
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+    
+    padding: 0 5px;
+}
+.slider {
+    width: 100%;
+}
+
+
+/*========== 4) About extention ==========*/
+
+.about-extention {
+    font-size: 18px;
+}
+
+.about-extention section {
+    margin: 15px 0 0;
+}
+
+.about-extention p {
+    width: 100%;
+    text-align: justify;
+    margin: 5px 0;
+    text-indent: 2em;
+    font-size: 18px;
+}
+
+.about-extention {
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background-color: #F5FFF6;
+}
+
+/*Header "Odobreno Mynysterstvom..."*/
+.about-extention .second-header {
+    width: 500px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/*Lists*/
+.about-extention ol {
+    width: 100%;
+    margin: 5px 0;
+    list-style-position: inside;
+    padding: 0;
+}
+
+.about-extention ol li {
+    text-indent: 2em;
+}
+
+/*========== 5) Work mode ==========*/
+.work-mode .navigation-bar {
+    background-color: #57A2CB;
+}
+
+.work-mode .timer {
+    background-color: #69DEFF;
+}
+
+.description-block {
+    width: 304px;
+    height: 100%;
+    border-radius: 24px;
+    padding: 10px;
+}
+
+.description-block p {
+    margin: 5px;
+}
+
+.work-mode-timer {
+    width: 420px;
+    font-size: 10px;
+    padding: 20px 10px;
+    gap: 10px;
+    border-radius: 24px;
+}
+
+.work-mode-timer .main-buttons {
+    height: 40px;
+}
+
+.textarea-block {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    align-items: flex-end;
+}
+
+.textarea-block p {
+    width: auto;
+    margin: 0;
+    padding: 0 5px 0 0;
+    font-size: 14px;
+}
+
+.textarea-block textarea {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    font-size: 18px;
+    padding: 00 5px;
+}
+
+
+
+.work-mode-timer .timer {
+    width: 90%;
+    height: 180px;
+}
+
+
+/*========== 6) Expence journal ==========*/
+
+.expence-journal {
+    width: 720px;
+    height: 100%;
+    padding: 20px;
+    gap: 10px;
+    border-radius: 8px;
+}
+
+.expence-journal p {
+    width: 100%;
+    margin: 5px 0 10px;
+    font-size: 18px;
+}
+
+.input-date-block {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+}
+
+.input-date-block input {
+    padding: 0 4px;
+    border: 2px solid black;
+    border-radius: 8px;
+}
+
+.expence-journal .text-area {
+    width: 100%;
+    height: 250px;
+    padding: 5px;
+    border: 2px solid black;
+    border-radius: 8px;
+    
+    overflow-y: auto;
+    font-size: 18px;
+}
+
+
+
