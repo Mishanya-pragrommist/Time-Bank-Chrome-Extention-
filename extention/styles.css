@@ -459,6 +459,7 @@ main {
 
 /*========== 3) Settings ==========*/
 
+/*Row which contains both regular and bonus limit*/
 .row {
     display: flex;
     justify-content: space-between;
@@ -469,12 +470,18 @@ main {
     margin: 10px 0 10px;
 }
 
+/*Block with header, counter and button or descrtiption*/
 .limit {
     width: 340px;
     height: 100%;
     border-radius: 16px;
     gap: 10px;
     padding: 30px 0;
+}
+
+.limit button {
+    width: 200px;
+    height: 50px;
 }
 
 .account-and-button {
@@ -494,47 +501,6 @@ main {
 .bonus-desc {
     text-align: center;
     margin: 0;
-}
-
-.limit button {
-    width: 200px;
-    height: 50px;
-}
-
-/* Notification time */
-
-.notifications-settings {
-    justify-content: space-around;
-    width: 600px;
-    padding: 10px;
-    gap: 10px;
-    height: 128px;
-    border-radius: 16px;
-}
-
-.notifications-settings h1 {
-    margin: 0;
-}
-
-.slider-container {
-    background-color: white;
-    width: 500px;
-    padding: 5px;
-    border-radius: 8px;
-}
-
-/*Slider*/
-.slider-labels {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #333;
-    
-    padding: 0 5px;
-}
-.slider {
-    width: 100%;
 }
 
 
