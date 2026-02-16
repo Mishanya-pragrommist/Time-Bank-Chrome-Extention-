@@ -27,6 +27,6 @@ class Time {
         // Если число 5 -> "05", если 12 -> "12"
         const pad = (num) => String(num).padStart(2, '0');
 
-        return `${pad(hours)}:${pad(minutes)}:${pad(remainingSeconds)}`;
+        return `${pad(this.hours)}:${pad(this.minutes)}:${pad(this.seconds)}`;
     }
 }
