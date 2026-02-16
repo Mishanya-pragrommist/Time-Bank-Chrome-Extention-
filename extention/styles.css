@@ -334,18 +334,10 @@ main {
 
 /*Buttons for starting/stopping timer, and presets*/
 .buttons-block {
-    gap: 10px;
+    gap: 30px;
 }
 
-.buttons-block .main-buttons {
-    width: 100%;
-    height: 65px;
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.buttons-block .main-buttons button {
+.buttons-block button {
     width: 100%;
     height: 100%;
 }
