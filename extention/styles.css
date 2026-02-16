@@ -435,6 +435,10 @@ main {
     max-width: 430px;
     font-size: 20px;
     text-decoration: underline;
+    
+    &:hover {
+        color: #2100af;
+    }
 }
 
 /*Buttons inside table*/
