@@ -478,8 +478,15 @@ main {
     height: 100%;
     border-radius: 16px;
     gap: 10px;
-    justify-content: space-around;
-    padding: 10px;
+    padding: 30px 0;
+}
+
+.account-and-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 227px;
+    gap: 30px;
 }
 
 .limit .bonus {
@@ -490,11 +497,12 @@ main {
 
 .bonus-desc {
     text-align: center;
+    margin: 0;
 }
 
 .limit button {
     width: 200px;
-    height: 40px;
+    height: 50px;
 }
 
 /* Notification time */
