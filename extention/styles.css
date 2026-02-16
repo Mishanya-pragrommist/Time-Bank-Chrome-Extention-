@@ -47,7 +47,7 @@ button:active {
     box-shadow: none;
 }
 
-    /*Color variations of buttons*/
+    /*Color variations for buttons*/
 .green-button {
     --main-color: #39BF44;
     --shadow-color: #006B09;
@@ -102,7 +102,6 @@ h1, h2, h3 {
 h1 {
     font-size: 30px; 
     text-align: center;
-    margin: 0;
 }
 h2 {
     font-size: 20px;
@@ -110,7 +109,6 @@ h2 {
 h3 { 
     width: 100%;
     font-size: 20px;
-    margin: 0;
     text-align: left;
     text-indent: 1.7em;
 }
@@ -145,17 +143,19 @@ p {
     text-decoration: none;
     
     color: black;
-}
-.navigation-bar .elem:hover {
-    color: white;
-    -webkit-text-stroke-color: black;
-    -webkit-text-stroke-width: 1px;
-    transition: 0.1s;
-    cursor: default;
-}
-.navigation-bar .elem:active {
-    -webkit-text-stroke-width: 0;
-    text-shadow: #0030B3 0 0 10px; 
+    
+    &:hover {
+        color: white;
+        -webkit-text-stroke-color: black;
+        -webkit-text-stroke-width: 1px;
+        transition: 0.1s;
+        cursor: default;
+    }
+    
+    &:active {
+        -webkit-text-stroke-width: 0;
+        text-shadow: #0030B3 0 0 10px; 
+    }
 }
 
 /*Main block of each page*/
@@ -176,16 +176,15 @@ main {
 
 .popup h1 {
     font-size: 40px;
-}
-
-.timeout-header {
     padding: 5px;
     width: 100%;
-    height: 108px;
+    min-height: 108px;
+    max-height: auto;
     align-content: center;
     
     border-radius: 8px;
 }
+
 
 .time-to-leave-text {
     width: 100%;
@@ -204,11 +203,11 @@ main {
 
 .reminder-text {
     font-size: 16px;
-    height: 70px;
+    height: 75px;
     margin: 15px 0;
     border-radius: 8px;
     text-align: center;
-    
+    padding: 5px;
 }
 .reminder-text p {
     margin: 0;
@@ -216,17 +215,14 @@ main {
 }
 
 
-/*Popus for timers being stopped*/
+/*Popups for stopped timers*/
 .pause-popup {
     height: 280px;
     gap: 10px;
     padding: 15px 10px;
 }
 
-
 .pause-buttons {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     width: 100%;
     height: auto;
@@ -241,7 +237,7 @@ main {
 /*========== 1) Main page ==========*/
 
 .current-account-block {
-    width: 320px;
+    width: 340px;
     height: 100%;
     justify-content: space-around;
     padding: 10px;
@@ -257,6 +253,12 @@ main {
     gap: 10px;
 }
 
+.current-account button {
+    width: 200px; 
+    height: 55px;
+}
+
+/*Account like 02:15:01*/
 .account {
     width: 308px;
     height: 110px;
@@ -273,15 +275,10 @@ main {
     
     border-radius: 8px;
     transition: 0.1s;
-}
-
-.account:hover {
-    transform: translateY(-2px);
-}
-
-.add-button {
-    width: 200px; 
-    height: 55px;
+    
+    &:hover {
+        transform: translateY(-2px);
+    }
 }
 
 /*Bonus account*/
@@ -299,10 +296,10 @@ main {
     background-color: #FFFBA9;
     
     transition: 0.1s;
-}
-
-.bonus-account:hover {
-    transform: translateY(-2px);
+    
+    &:hover {
+        transform: translateY(-2px);
+    }
 }
 
 /* == Timer == */
@@ -332,14 +329,21 @@ main {
     box-shadow: var(--shadow-color) 0 6px 6px;
 }
 
-/*Buttons for starting/stopping timer, and presets*/
+/*Buttons for starting/stopping timer and presets*/
 .buttons-block {
-    gap: 30px;
+    gap: 20px;
 }
 
 .buttons-block button {
     width: 100%;
     height: 100%;
+}
+
+.buttons-block .timers-buttons {
+    display: flex;
+    width: 100%;
+    height: 55px;
+    gap: 10px;
 }
 
 .buttons-block .presets-block {
@@ -538,6 +542,11 @@ main {
 
 .about-extention {
     font-size: 18px;
+    height: 100%;
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 8px;
+    background-color: #F5FFF6;
 }
 
 .about-extention section {
@@ -550,14 +559,6 @@ main {
     margin: 5px 0;
     text-indent: 2em;
     font-size: 18px;
-}
-
-.about-extention {
-    height: 100%;
-    padding: 20px;
-    overflow-y: auto;
-    border-radius: 8px;
-    background-color: #F5FFF6;
 }
 
 /*Header "Odobreno Mynysterstvom..."*/
