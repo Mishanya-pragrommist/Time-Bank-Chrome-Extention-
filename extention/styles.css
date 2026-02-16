@@ -468,7 +468,7 @@ main {
     justify-content: space-between;
     
     width: 100%;
-    height: 250px;
+    height: 340px;
     
     margin: 10px 0 10px;
 }
@@ -486,6 +486,10 @@ main {
     background: none;
     background-color: #FFFBA9;
     border: 3px solid black;
+}
+
+.bonus-desc {
+    text-align: center;
 }
 
 .limit button {
