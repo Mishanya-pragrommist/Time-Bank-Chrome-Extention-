@@ -235,16 +235,6 @@ main {
 .pause-buttons button {
     width: 100%;
     height: 55px;
-    
-}
-
-/*Text "If you finish the work fully,
- *  you will receive (bonus)"*/
-.finish-wm-text {
-    text-align: center;
-    margin: 0;
-    padding: 5px;
-    border-radius: 8px;
 }
 
 
