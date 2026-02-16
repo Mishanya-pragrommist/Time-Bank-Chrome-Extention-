@@ -6,5 +6,5 @@ textArea.addEventListener("input", function () {
           const count = textArea.value.replace(/[^a-zA-Z0-9а-яА-ЯёЁ]/g, "").length;
           charCount.textContent = count;
           
-          textArea.style.boxShadow = `${count < 40 ? "red" : "green"} 0 0 10px`;
+          textArea.style.boxShadow = `${count < 40 ? "red" : "green"} 0 0 5px`;
 });
