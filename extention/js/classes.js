@@ -20,25 +20,43 @@ class Time {
             this.minutes += extraMinutes;
         }
         
-        if (minutes !== undefined) {
-            this.minutes += minutes;
-            if (this.minutes >= 60) {
-                const extraHours =  Math.floor(this.minutes / 60);
-                this.minutes -= 60 * extraHours;
-                this.hours += extraHours;
-            }
+        if (minutes !== undefined) this.minutes += minutes;
+        
+        if (this.minutes >= 60) {
+            const extraHours =  Math.floor(this.minutes / 60);
+            this.minutes -= 60 * extraHours;
+            this.hours += extraHours;
         }
         
-        if (hours !== undefined) {
-            this.hours += hours;
-        }
+        if (hours !== undefined) this.hours += hours;
     }
     
     substract(seconds, minutes, hours) {
-        if (hours > this.hours) throw new Exception("Not enough hours");
-        this.hours -= hours;
-        this.minutes -= minutes;
+        if (this.toSeconds < seconds + minutes * 60 + hours * 3600) {
+            console.log("Not enough time");
+        }
+        
         this.seconds -= seconds;
+        if (this.seconds < 0) {
+            this.seconds *= -1;
+            const extraMinutes = Math.ceil(this.seconds / 60);
+            this.minutes -= extraMinutes;
+            this.seconds = 60 * extraMinutes - this.seconds;
+        }
+        
+        if (minutes !== undefined) this.minutes -= minutes;
+        if (this.minutes < 0) {
+            this.minutes *= -1;
+            const extraHours = Math.ceil(this.minutes / 60);
+            this.hours -= extraHours;
+            this.minutes = 60 * extraHours - this.minutes;
+        }
+        
+        if (hours !== undefined) this.hours -= hours;
+    }
+    
+    toSeconds() {
+        return this.seconds + this.minutes * 60 + this.hours * 3600;
     }
     
     floor() {
@@ -64,4 +82,4 @@ console.log(test.toString());
 test.add(250, 120);
 console.log("1:20:20 + 240s 120m = ", test.toString());
 
-test.substract();
+console.log(test.toString(), " - 20s = ", test.substract(30));
