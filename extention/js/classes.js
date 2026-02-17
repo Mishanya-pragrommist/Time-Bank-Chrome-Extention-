@@ -32,7 +32,7 @@ class Time {
     }
     
     substract(seconds, minutes, hours) {
-        if (this.toSeconds < seconds + minutes * 60 + hours * 3600) {
+        if (this.toSeconds < (seconds + minutes * 60 + hours * 3600)) {
             console.log("Not enough time");
         }
         
@@ -44,7 +44,8 @@ class Time {
             this.seconds = 60 * extraMinutes - this.seconds;
         }
         
-        if (minutes !== undefined) this.minutes -= minutes;
+        if (minutes !== undefined && minutes > 0)
+            this.minutes -= minutes;
         if (this.minutes < 0) {
             this.minutes *= -1;
             const extraHours = Math.ceil(this.minutes / 60);
@@ -52,7 +53,9 @@ class Time {
             this.minutes = 60 * extraHours - this.minutes;
         }
         
-        if (hours !== undefined) this.hours -= hours;
+        if (hours !== undefined && hours > 0) 
+            this.hours -= hours;
+        return this;
     }
     
     toSeconds() {
@@ -82,4 +85,6 @@ console.log(test.toString());
 test.add(250, 120);
 console.log("1:20:20 + 240s 120m = ", test.toString());
 
-console.log(test.toString(), " - 20s = ", test.substract(30));
+const seconds = 0;
+const minutes = 160;
+console.log(`${test.toString()} - ${minutes}:${seconds} = ${test.substract(seconds, minutes).toString()}`);
