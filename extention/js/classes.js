@@ -62,14 +62,42 @@ class Time {
         return this.seconds + this.minutes * 60 + this.hours * 3600;
     }
     
+    // Rounds time to minutes in smaller side
     floor() {
         this.seconds = 0;
+    }
+    
+    // Increases time by 1 second
+    up() {
+        this.seconds++;
+        if (this.seconds >= 60) {
+            this.seconds = 0;
+            this.minutes++;
+        }
+        if (this.minutes >= 60) {
+            this.minutes = 0;
+            this.hours++;
+        }
+    }
+    
+    // Decreases time by 1 second
+    down() {
+        this.seconds--;
+        if (this.seconds < 0) {
+            this.seconds = 59;
+            this.minutes--;
+        }
+        if (this.minutes < 0) {
+            this.minutes = 59;
+            this.hours--;
+        }
     }
     
     getTime() {
         return new Time(this);
     }
     
+    // Formats time in "hh:mm:ss" format
     toString() {
         // For adding 0 (pad)
         // Eg,  5 -> "05", 12 -> "12"
@@ -77,6 +105,8 @@ class Time {
         return `${pad(this.hours)}:${pad(this.minutes)}:${pad(this.seconds)}`;
     }
 }
+
+//Tests
 
 const test = new Time(1, 20, 20);
 
@@ -88,3 +118,34 @@ console.log("1:20:20 + 240s 120m = ", test.toString());
 const seconds = 0;
 const minutes = 160;
 console.log(`${test.toString()} - ${minutes}:${seconds} = ${test.substract(seconds, minutes).toString()}`);
+
+test.floor();
+console.log("floor() = ", test.toString());
+
+console.log("Testing methods up() and down()");
+console.log("Up()");
+for (let i = 0; i < 200; i++) {
+    test.up();
+    console.log(test.toString());
+}
+
+console.log("Down()");
+for (let i = 0; i < 200; i++) {
+    test.down();
+    console.log(test.toString());
+}
+
+test.seconds = 23;
+test.minutes = 54;
+test.hours = 3;
+console.log(test.toString(), " + toSeconds() = ", test.toSeconds());
+
+class Transaction {
+    constructor(date, time, description) {
+        
+    }
+    
+    toString() {
+        
+    }
+}
