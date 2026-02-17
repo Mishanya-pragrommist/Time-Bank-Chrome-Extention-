@@ -106,46 +106,21 @@ class Time {
     }
 }
 
-//Tests
-
-const test = new Time(1, 20, 20);
-
-console.log(test.toString());
-
-test.add(250, 120);
-console.log("1:20:20 + 240s 120m = ", test.toString());
-
-const seconds = 0;
-const minutes = 160;
-console.log(`${test.toString()} - ${minutes}:${seconds} = ${test.substract(seconds, minutes).toString()}`);
-
-test.floor();
-console.log("floor() = ", test.toString());
-
-console.log("Testing methods up() and down()");
-console.log("Up()");
-for (let i = 0; i < 200; i++) {
-    test.up();
-    console.log(test.toString());
-}
-
-console.log("Down()");
-for (let i = 0; i < 200; i++) {
-    test.down();
-    console.log(test.toString());
-}
-
-test.seconds = 23;
-test.minutes = 54;
-test.hours = 3;
-console.log(test.toString(), " + toSeconds() = ", test.toSeconds());
+const Type = Object.freeze({
+    SPEND: 1,
+    EARN: 2,
+    EVENT: 3
+});
 
 class Transaction {
-    constructor(date, time, description) {
-        
+    constructor(timestamp, type, description, accountTime) {
+        this.timestamp = timestamp;
+        this.type = type;
+        this.description = description;
+        if (accountTime !== undefined) this.amount = accountTime;
     }
     
     toString() {
-        
+        return `${this.timestamp} ${this.type} ${this.description}`;
     }
 }
