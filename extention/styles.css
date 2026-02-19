@@ -258,24 +258,12 @@ main {
     height: 55px;
 }
 
-/*Add bonus buttons and textarea*/
-.add-bonus-block {
-    width: 310px;
+/*Add bonus popup*/
+
+.add-bonus-popup {
+    padding: 10px;
     height: auto;
     gap: 10px;
-}
-
-.add-bonus-buttons {
-    display: flex;
-    justify-content: space-between;
-    width: auto;
-    gap: 10px;
-}
-
-.add-bonus-buttons .cancel-btn {
-    width: 65px;
-    height: 55px;
-    display: none;
 }
 
 .bonus-desc {
@@ -283,8 +271,20 @@ main {
     border-radius: 8px;
     resize: none;
     font-size: 16px;
-    
-    display: none;
+    text-align: left;
+}
+
+.add-cancel-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 55px;
+    gap: 10px;
+}
+
+.add-cancel-buttons button {
+    width: 100%;
+    height: 100%;
 }
 
 /*Account like 02:15:01*/
