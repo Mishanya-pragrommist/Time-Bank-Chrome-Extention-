@@ -12,8 +12,10 @@ bonus.textContent = time.toString();
 
 console.log(time.toString());
 
-addButton.addEventListener("click", () => {
+addButton.addEventListener("click", async () => {
     console.log("add button works");
-    const response = fetch("../html/popups/add bonus.html");
+    const response = await fetch("../html/popups/add bonus.html");
+    const html = await response.text();
     
+    modalWindow.innerHTML = html;
 });
