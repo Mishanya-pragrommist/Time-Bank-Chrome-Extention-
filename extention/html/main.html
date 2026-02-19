@@ -21,13 +21,19 @@
             <div class="centered-items current-account-block light-shadow light-green">
                 <div class=" centered-items current-account">
                     <h1>Текущий счет</h1>
-                    <div class="account light-shadow" js-account>02:00:00</div>
-                    <button class="green-button">Добавить</button>
+                    <div class="account light-shadow" main-account>02:00:00</div>
+                    <div class="add-bonus-block centered-items">
+                        <div class="add-bonus-buttons">
+                            <button class="green-button" add-button>Добавить</button>
+                            <button class="red-button cancel-btn" cancel-button>X</button>
+                        </div>
+                        <textarea class="bonus-desc" bonus-description></textarea>
+                    </div>
                 </div>
                 
                 <div class="centered-items bonus">
                     <h1>Доступный бонус</h1>
-                    <div class="bonus-account">02:00:00</div>
+                    <div class="bonus-account" bonus-account>02:00:00</div>
                 </div>
             </div>
             
@@ -50,6 +56,6 @@
                 </div>
             </div>
         </main>
-        <script src="../js/classes.js"></script>
+        <script type="module" src="../js/main.js"></script>
     </body>
 </html>

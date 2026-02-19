@@ -258,6 +258,35 @@ main {
     height: 55px;
 }
 
+/*Add bonus buttons and textarea*/
+.add-bonus-block {
+    width: 310px;
+    height: auto;
+    gap: 10px;
+}
+
+.add-bonus-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: auto;
+    gap: 10px;
+}
+
+.add-bonus-buttons .cancel-btn {
+    width: 65px;
+    height: 55px;
+    display: none;
+}
+
+.bonus-desc {
+    width: 100%;
+    border-radius: 8px;
+    resize: none;
+    font-size: 16px;
+    
+    display: none;
+}
+
 /*Account like 02:15:01*/
 .account {
     width: 308px;
