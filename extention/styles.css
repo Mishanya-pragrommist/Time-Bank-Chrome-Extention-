@@ -261,9 +261,16 @@ main {
 /*Add bonus popup*/
 
 .add-bonus-popup {
+    display: flexbox;
+    
     padding: 10px;
     height: auto;
     gap: 10px;
+    
+    position: fixed;
+    top: 250px;
+    left: 200px;
+    
 }
 
 .time-enter-block {
@@ -304,11 +311,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .add-cancel-buttons button {
     width: 100%;
     height: 100%;
-}
-
-.add-bonus-modal-window {
-    position: absolute;
-    
 }
 
 /*Account like 02:15:01*/

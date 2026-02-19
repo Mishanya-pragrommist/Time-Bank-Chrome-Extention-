@@ -14,8 +14,11 @@ console.log(time.toString());
 
 addButton.addEventListener("click", async () => {
     console.log("add button works");
-    const response = await fetch("../html/popups/add bonus.html");
-    const html = await response.text();
-    
-    modalWindow.innerHTML = html;
+    modalWindow.style.display = "flex";
+});
+
+const addButtonWindow = modalWindow.querySelector("[add-button]");
+addButtonWindow.addEventListener("click", () => {
+    console.log("final add button works");
+    modalWindow.style.display = 'none';
 });
