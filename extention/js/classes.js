@@ -1,15 +1,9 @@
-class Time {
-    constructor(hours, minutes, seconds, time) {
-        if (time !== undefined) {
-            this.seconds = time.seconds;
-            this.minutes = time.minutes;
-            this.hours = time.hours;
-        }
-        else {
-            this.hours = hours;
-            this.minutes = minutes;
-            this.seconds = seconds;
-        }
+//Represents time in "hh:mm:ss" format
+export class Time {
+    constructor(hours, minutes, seconds) {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
     }
     
     add(seconds, minutes, hours) {
@@ -106,18 +100,21 @@ class Time {
     }
 }
 
+//Type of events like "spent 30 minutes", 
+//"got 20 minutes bonus" etc
 const Type = Object.freeze({
     SPEND: 1,
     EARN: 2,
     EVENT: 3
 });
 
+//Represents one action
 class Transaction {
-    constructor(timestamp, type, description, accountTime) {
-        this.timestamp = timestamp;
-        this.type = type;
+    constructor(timestamp, type, description, time) {
+        if (timestamp instanceof Date) this.timestamp = timestamp;
+        if (type === Type) this.type = type;
         this.description = description;
-        if (accountTime !== undefined) this.amount = accountTime;
+        if (time !== undefined && time instanceof Time) this.amount = time;
     }
     
     toString() {
