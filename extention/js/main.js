@@ -12,13 +12,23 @@ bonus.textContent = time.toString();
 
 console.log(time.toString());
 
-addButton.addEventListener("click", async () => {
+addButton.addEventListener("click", () => {
     console.log("add button works");
     modalWindow.style.display = "flex";
 });
 
-const addButtonWindow = modalWindow.querySelector("[add-button]");
-addButtonWindow.addEventListener("click", () => {
-    console.log("final add button works");
-    modalWindow.style.display = 'none';
-});
+const submitButtonWindow = modalWindow.querySelector("[submit-btn]");
+const cancelButtonWindow = modalWindow.querySelector("[cancel-btn]");
+
+const bonusDescArea = modalWindow.querySelector("[bonus-desc]");
+const timeInput = modalWindow.querySelector("[time-input]");
+
+//Removes text in inputs and makes window invisible
+function closeModal() {
+    modalWindow.style.display = "none";
+    bonusDescArea.value = '';
+    timeInput.value = '00:00';
+}
+
+submitButtonWindow.addEventListener("click", closeModal);
+cancelButtonWindow.addEventListener("click", closeModal);

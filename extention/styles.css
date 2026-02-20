@@ -261,16 +261,18 @@ main {
 /*Add bonus popup*/
 
 .add-bonus-popup {
-    display: flexbox;
-    
-    padding: 10px;
-    height: auto;
-    gap: 10px;
+    display: none;
     
     position: fixed;
     top: 250px;
     left: 200px;
     
+    padding: 10px;
+    height: auto;
+    gap: 10px;
+    
+    border: 2px solid black;
+    border-radius: 16px;
 }
 
 .time-enter-block {
