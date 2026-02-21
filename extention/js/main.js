@@ -38,13 +38,19 @@ submitButtonWindow.addEventListener("click", () => {
     const timeInputRaw = timeInputField.value;
     const bonusDesc = bonusDescField.value;
     
-    const enteredTime = new Time();
+    const timeParts = timeInputRaw.split(":"); 
+    const minutes = Number.parseInt(timeParts[0]);
+    const seconds = Number.parseInt(timeParts[1]);
     
-    time.add(timeInput);
+    const enteredTime = new Time(0, minutes, seconds);
+    
+    time.add(enteredTime);
+    account.textContent = "";
     account.textContent = time.toString();
     
-    console.log("Entered time: ", timeInput, ", type: ", typeof timeInput);
-    console.log("Bonus desc: ", bonusDesc, ", type: ", typeof bonusDesc);
+    console.log("Entered time: ", timeInputRaw);
+    console.log("Bonus desc: ", bonusDesc);
+    console.log("time: ", time.toString());
     closeModal();
 });
 cancelButtonWindow.addEventListener("click", closeModal);
