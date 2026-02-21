@@ -34,6 +34,7 @@ export class Time {
     substract(seconds, minutes, hours) {
         if (this.toSeconds < (seconds + minutes * 60 + hours * 3600)) {
             console.log("Not enough time");
+            return;
         }
         
         this.seconds -= seconds;
