@@ -1,9 +1,9 @@
 //Represents time in "hh:mm:ss" format
 export class Time {
-    constructor(hours, minutes, seconds) {
-        this.hours = hours;
-        this.minutes = minutes;
-        this.seconds = seconds;
+    constructor(hours, minutes, seconds) { 
+        this.hours = (hours !== undefined ? hours : 0);
+        this.minutes = (minutes !== undefined ? minutes : 0);
+        this.seconds = (seconds !== undefined ? seconds : 0);
     }
     
     reset() {
