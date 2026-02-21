@@ -6,6 +6,12 @@ export class Time {
         this.seconds = seconds;
     }
     
+    reset() {
+        this.seconds = 0;
+        this.minutes = 0;
+        this.hours = 0;
+    }
+    
     add(seconds, minutes, hours) {
         this.seconds += seconds;
         if (this.seconds >= 60) {
@@ -102,14 +108,14 @@ export class Time {
 
 //Type of events like "spent 30 minutes", 
 //"got 20 minutes bonus" etc
-const Type = Object.freeze({
+export const Type = Object.freeze({
     SPEND: 1,
     EARN: 2,
     EVENT: 3
 });
 
 //Represents one action
-class Transaction {
+export class Transaction {
     constructor(timestamp, type, description, time) {
         if (timestamp instanceof Date) this.timestamp = timestamp;
         if (type === Type) this.type = type;
@@ -119,5 +125,35 @@ class Transaction {
     
     toString() {
         return `${this.timestamp} ${this.type} ${this.description}`;
+    }
+}
+
+export class Timer {
+    constructor(time) {
+        this.time = time;
+    }
+    
+    set(time) {
+        if (typeof time !== Time) return;
+        
+        const difference = this.time.substract(time.seconds, time.minutes, time.hours);
+        this.time = time;
+        return difference;
+    }
+    
+    reset() {
+        this.time.reset();
+    }
+    
+    start() {
+        console.log("Timer started working");
+    }
+    
+    pause() {
+        console.log("Timer paused");
+    }
+    
+    stop() {
+        console.log("Timer stopped. Rest: ", this.time);
     }
 }
