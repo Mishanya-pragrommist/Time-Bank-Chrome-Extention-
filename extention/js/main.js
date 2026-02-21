@@ -24,7 +24,8 @@ const cancelButtonWindow = modalWindow.querySelector("[cancel-btn]");
 
 // Fields in modal window to fill
 const bonusDescField = modalWindow.querySelector("[bonus-desc]");
-const timeInputField = modalWindow.querySelector("[time-input]");
+const minutesField = modalWindow.querySelector("[minutes-js]");
+const secondsField = modalWindow.querySelector("[seconds-js]");
 
 // For closing window
 
@@ -32,18 +33,21 @@ const timeInputField = modalWindow.querySelector("[time-input]");
 function closeModal() {
     modalWindow.style.display = "none";
     bonusDescField.value = '';
-    timeInputField.value = '00:00';
+    minutesField.value = 0;
+    secondsField.value = 0;
 }
 
 submitButtonWindow.addEventListener("click", () => {
-    // Getting raw data from fields
-    const timeInputRaw = timeInputField.value;
+    // Getting data from fields
+    const minutes = Number.parseInt(minutesField.value);
+    const seconds = Number.parseInt(secondsField.value);
     const bonusDesc = bonusDescField.value;
     
-    // Split time string into two numbers
-    const timeParts = timeInputRaw.split(":"); 
-    const minutes = Number.parseInt(timeParts[0]);
-    const seconds = Number.parseInt(timeParts[1]);
+    // Check if we have enough time on bonus account
+    if (bonus.toSeconds() < seconds + minutes * 60) {
+        console.log("Not enough time on bonus account");
+        return;
+    }
     
     // Add time to account and substract it from bonusAccount 
     time.add(seconds, minutes); // No need for adding hours
@@ -53,7 +57,7 @@ submitButtonWindow.addEventListener("click", () => {
     bonusAccount.textContent = bonus.toString();
     
     // For debugging
-    console.log("Entered time: ", timeInputRaw);
+    console.log("Entered time: ", `${minutes}:${seconds}`);
     console.log("Bonus desc: ", bonusDesc);
     console.log("time: ", time.toString());
     
