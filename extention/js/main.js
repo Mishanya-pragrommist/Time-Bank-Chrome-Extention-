@@ -1,4 +1,4 @@
-import { Time } from "./classes.js";
+import { Time, Timer } from "./classes.js";
 
 // For testing
 const time = new Time(1, 20, 20);
@@ -21,18 +21,33 @@ addButton.addEventListener("click", () => {
 const submitButtonWindow = modalWindow.querySelector("[submit-btn]");
 const cancelButtonWindow = modalWindow.querySelector("[cancel-btn]");
 
-const bonusDescArea = modalWindow.querySelector("[bonus-desc]");
-const timeInput = modalWindow.querySelector("[time-input]");
+// Fields in modal window to fill
+const bonusDescField = modalWindow.querySelector("[bonus-desc]");
+const timeInputField = modalWindow.querySelector("[time-input]");
 
 // For closing window
 
 // Removes text in inputs and makes window invisible
 function closeModal() {
     modalWindow.style.display = "none";
-    bonusDescArea.value = '';
-    timeInput.value = '00:00';
+    bonusDescField.value = '';
+    timeInputField.value = '00:00';
 }
 
-// There will be added input handling in future
-submitButtonWindow.addEventListener("click", closeModal);
+submitButtonWindow.addEventListener("click", () => {
+    const timeInputRaw = timeInputField.value;
+    const bonusDesc = bonusDescField.value;
+    
+    const enteredTime = new Time();
+    
+    time.add(timeInput);
+    account.textContent = time.toString();
+    
+    console.log("Entered time: ", timeInput, ", type: ", typeof timeInput);
+    console.log("Bonus desc: ", bonusDesc, ", type: ", typeof bonusDesc);
+    closeModal();
+});
 cancelButtonWindow.addEventListener("click", closeModal);
+
+// ======== For timer ========
+const timer = new Timer();
