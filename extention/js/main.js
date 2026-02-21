@@ -2,6 +2,7 @@ import { Time, Timer } from "./classes.js";
 
 // For testing
 const time = new Time(1, 20, 20);
+const bonus = new Time(1);
 
 const account = document.querySelector("[main-account]");
 const bonusAccount = document.querySelector("[bonus-account]");
@@ -10,7 +11,7 @@ const modalWindow = document.querySelector("[modal-window]");
 
 // To check if class Time is correctly shown
 account.textContent = time.toString();
-bonusAccount.textContent = time.toString();
+bonusAccount.textContent = bonus.toString();
 
 //Shows modal window
 addButton.addEventListener("click", () => {
@@ -35,22 +36,27 @@ function closeModal() {
 }
 
 submitButtonWindow.addEventListener("click", () => {
+    // Getting raw data from fields
     const timeInputRaw = timeInputField.value;
     const bonusDesc = bonusDescField.value;
     
+    // Split time string into two numbers
     const timeParts = timeInputRaw.split(":"); 
     const minutes = Number.parseInt(timeParts[0]);
     const seconds = Number.parseInt(timeParts[1]);
     
-    const enteredTime = new Time(0, minutes, seconds);
-    
-    time.add(enteredTime);
-    account.textContent = "";
+    // Add time to account and substract it from bonusAccount 
+    time.add(seconds, minutes); // No need for adding hours
     account.textContent = time.toString();
     
+    bonus.substract(seconds, minutes);
+    bonusAccount.textContent = bonus.toString();
+    
+    // For debugging
     console.log("Entered time: ", timeInputRaw);
     console.log("Bonus desc: ", bonusDesc);
     console.log("time: ", time.toString());
+    
     closeModal();
 });
 cancelButtonWindow.addEventListener("click", closeModal);
