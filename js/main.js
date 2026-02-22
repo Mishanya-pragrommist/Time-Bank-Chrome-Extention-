@@ -153,3 +153,13 @@ stopTimerBtn.addEventListener("click", () => {
     
     timer.stop();
 });
+
+const presetButtons = document.querySelectorAll("preset-btn");
+presetButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        if (btn.value < 0) {
+            timer.set(time);
+        }
+        time.add();
+    });
+});
