@@ -29,17 +29,25 @@ const timeInputField = modalWindow.querySelector("[time-input]");
 
 // Text that shows up if:
 //      not enough time on bonus account;
-//      user entered more than 20 minutes
+//      user entered more than 20 minutes.
 const noteText = modalWindow.querySelector("[note-js]");
 
 // === For closing window ===
 
-// Removes text in inputs and makes window invisible
+// Removes text in inputs and hides modal window
 function closeModal() {
     modalWindow.style.display = "none";
     bonusDescField.value = '';
     timeInputField.value="00:00";
 }
+
+// To close window when user clicked outside the window
+modalWindow.addEventListener("click", (event) => {
+    if (event.target === modalWindow) {
+        closeModal();
+        console.log("Окно закрыто по клику вне области");
+    }
+});
 
 // To submit adding time
 submitButtonWindow.addEventListener("click", () => {
