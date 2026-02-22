@@ -102,11 +102,13 @@ submitButtonWindow.addEventListener("click", () => {
 cancelButtonWindow.addEventListener("click", closeModal);
 
 // ======== For timer ========
-const timer = new Timer();
+const timer = new Timer(0, 0, 0);
 
 const timerField = document.querySelector("[timer-js]");
+const startTimerBtn = document.querySelector("[start-timer]");
+const stopTimerBtn = document.querySelector("[stop-timer]");
 
-timerField.addEventListener("input", () => {
+startTimerBtn.addEventListener("click", () => {
     if (timerField.value === '') {
         console.log("timerField is empty or incorrect");
         return;
@@ -130,7 +132,24 @@ timerField.addEventListener("input", () => {
     time.substract(seconds, minutes, hours);
     account.textContent = time.toString();
     
-    timer.set(seconds, minutes, hours);    
+    timer.set(seconds, minutes, hours);
+    timer.start();
 });
 
-const startTimerBtn = document.querySelector("[]");
+stopTimerBtn.addEventListener("click", () => {
+    if (!timer.hasTime()) {
+        console.log("Timer has no time");
+        return;
+    }
+    
+    // Add time and refresh account value
+    time.add(timer.time.seconds, 
+             timer.time.minutes,
+             timer.time.seconds);
+    account.textContent = time.toString();
+    
+    timer.reset();
+    timerField.value = "00:00:00";
+    
+    timer.stop();
+});
