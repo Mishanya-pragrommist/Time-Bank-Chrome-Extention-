@@ -260,12 +260,26 @@ main {
 
 /*Add bonus popup*/
 
-.add-bonus-popup {
-    display: none;
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Приклеиваем к экрану */
+    top: 0;
+    left: 0;
+    width: 100vw; /* 100% ширины экрана */
+    height: 100vh; /* 100% высоты экрана */
+    background-color: rgba(0, 0, 0, 0.5); /* Черный цвет, 50% прозрачности */
+    z-index: 1000; /* Кладем поверх всех остальных элементов сайта */
     
+    /* Сразу центрируем внутреннее окно с помощью Flexbox */
+    justify-content: center;
+    align-items: center;
+}
+
+.add-bonus-popup {
     position: fixed;
-    top: 250px;
-    left: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     
     padding: 10px;
     height: auto;
