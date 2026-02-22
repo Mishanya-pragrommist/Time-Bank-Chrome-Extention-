@@ -43,11 +43,20 @@ function closeModal() {
 
 // To submit adding time
 submitButtonWindow.addEventListener("click", () => {
+    // If entered time contains empty number 
+    // like "--:12", "12:--" or "--:--"
+    if (timeInputField.value === '') {
+        noteText.textContent = "Во всех полях должны быть числа (хотя бы нолики)";
+        noteText.style.display = "block";
+        return;
+    }
+    
     // Get data from fields
     const timeInput = timeInputField.value.split(":");
     const minutes = Number.parseInt(timeInput[0]);
     const seconds = Number.parseInt(timeInput[1]);
-    const bonusDesc = bonusDescField.value;
+    const bonusDesc = bonusDescField.value; // Will be used in localStorage
+    
     
     // If user entered no time, just close window
     if (minutes === 0 && seconds === 0) {
@@ -66,7 +75,7 @@ submitButtonWindow.addEventListener("click", () => {
     
     // Check if there is enough time on bonus account
     if (bonus.toSeconds() < seconds + minutes * 60) {
-        noteText.textContent = "Бонусов недостаточно";
+        noteText.textContent = "Бонусов, увы, недостаточно";
         noteText.style.display = "block";
         return;
     }
