@@ -130,8 +130,12 @@ export class Transaction {
 }
 
 export class Timer {
-    constructor(time) {
-        this.time = time;
+    constructor(hours, minutes, seconds) {
+        this.time = new Time(hours, minutes, seconds);
+    }
+    
+    hasTime() {
+        return this.time.toSeconds() > 0;
     }
     
     set(seconds, minutes, hours) {
