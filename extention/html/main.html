@@ -33,23 +33,25 @@
             
             <!--Timer blocks-->
             <div class="timer-block centered-items light-shadow light-green">
-                <input class="timer light-shadow"
-                       type="time" 
-                       step="1"
-                       value="00:00:00"
-                       timer-js>
+                <div>
+                    <input class="timer light-shadow"
+                           type="time" 
+                           step="1"
+                           value="00:00:00"
+                           timer-js>
+                </div>
                 <div class="buttons-block centered-items">
                     <div class="timers-buttons">
-                        <button class="green-button">Запустить</button>
-                        <button class="red-button">Остановить</button>
+                        <button class="green-button" start-timer>Запустить</button>
+                        <button class="red-button" stop-timer>Остановить</button>
                     </div>
                     <div class="presets-block">
                         <div class="first-row">
-                            <button class="orange-button preset">5 мин</button>
-                            <button class="orange-button preset">15 мин</button>
-                            <button class="orange-button preset">30 мин</button>
+                            <button class="orange-button preset" value="5" preset-btn>5 мин</button>
+                            <button class="orange-button preset" value="15" preset-btn>15 мин</button>
+                            <button class="orange-button preset" value="30" preset-btn>30 мин</button>
                         </div>
-                        <button class="orange-button all-acc-button">Весь счет залпом</button>
+                        <button class="orange-button all-acc-button" all-acc-preset-btn>Весь счет залпом</button>
                     </div>
                 </div>
             </div>
