@@ -55,24 +55,25 @@
             </div>
             
             <!--Modal window for adding bonus time-->
-            <div class="light-green popup add-bonus-popup centered-items"
-                 modal-window>
-                <p class="note" note-js></p>
-                
-                <div class="time-enter-block">
-                    <input class="time-input"
-                           type="time" 
-                           value="00:00"
-                           min="01:00"
-                           max="20:00"
-                           time-input>
-                    <textarea placeholder="За что бонус?"
-                              class="bonus-desc"
-                              bonus-desc></textarea>
-                </div>
-                <div class="add-cancel-buttons">
-                    <button class="red-button" cancel-btn>Отменить</button>
-                    <button class="green-button" submit-btn>Добавить</button>
+            <div class="modal-overlay" modal-window>
+                <div class="light-green popup add-bonus-popup centered-items">
+                    <p class="note" note-js></p>
+
+                    <div class="time-enter-block">
+                        <input class="time-input"
+                               type="time" 
+                               value="00:00"
+                               min="01:00"
+                               max="20:00"
+                               time-input>
+                        <textarea placeholder="За что бонус?"
+                                  class="bonus-desc"
+                                  bonus-desc></textarea>
+                    </div>
+                    <div class="add-cancel-buttons">
+                        <button class="red-button" cancel-btn>Отменить</button>
+                        <button class="green-button" submit-btn>Добавить</button>
+                    </div>
                 </div>
             </div>
         </main>
