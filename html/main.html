@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Банк времени</title>
+        <link rel="stylesheet" href="../styles.css">
+    </head>
+    <body class="centered-items">
+        <nav class="navigation-bar">
+            <img src="../images/icon%20128px.png" width="64">
+            <a class="elem" href="main.html">Главная</a>
+            <a class="elem" href="black%20list.html">Черный список</a>
+            <a class="elem" href="settings.html">Настройки</a>
+            <a class="elem" href="work%20mode.html">Режим работы</a>
+            <a class="elem" href="expense%20journal.html">Журнал трат</a>
+            <a class="elem" href="about%20extention.html">О расширении</a>
+        </nav>
+        
+        <main style="display: flex; justify-content: space-between">
+            <!--Current and bonus account-->
+            <div class="centered-items current-account-block light-shadow light-green">
+                <div class=" centered-items current-account">
+                    <h1>Текущий счет</h1>
+                    <div class="account light-shadow" main-account>02:00:00</div>
+                    <button class="green-button" add-button>Добавить</button>
+                </div>
+                
+                <div class="centered-items bonus">
+                    <h1>Доступный бонус</h1>
+                    <div class="bonus-account" bonus-account>02:00:00</div>
+                </div>
+            </div>
+            
+            <!--Timer blocks-->
+            <div class="timer-block centered-items light-shadow light-green">
+                <div>
+                    <input class="timer light-shadow"
+                           type="time" 
+                           step="1"
+                           value="00:00:00"
+                           timer-js>
+                </div>
+                <div class="buttons-block centered-items">
+                    <div class="timers-buttons">
+                        <button class="green-button" start-timer>Запустить</button>
+                        <button class="red-button" stop-timer>Остановить</button>
+                    </div>
+                    <div class="presets-block">
+                        <div class="first-row">
+                            <button class="orange-button preset" value="5" preset-btn>5 мин</button>
+                            <button class="orange-button preset" value="15" preset-btn>15 мин</button>
+                            <button class="orange-button preset" value="30" preset-btn>30 мин</button>
+                        </div>
+                        <button class="orange-button all-acc-button" all-acc-preset-btn>Весь счет залпом</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!--Modal window for adding bonus time-->
+            <div class="modal-overlay" modal-window>
+                <div class="light-green popup add-bonus-popup centered-items">
+                    <p class="note" note-js></p>
+
+                    <div class="time-enter-block">
+                        <input class="time-input"
+                               type="time" 
+                               value="00:00"
+                               min="01:00"
+                               max="20:00"
+                               time-input>
+                        <textarea placeholder="За что бонус?"
+                                  class="bonus-desc"
+                                  bonus-desc></textarea>
+                    </div>
+                    <div class="add-cancel-buttons">
+                        <button class="red-button" cancel-btn>Отменить</button>
+                        <button class="green-button" submit-btn>Добавить</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script type="module" src="../js/main.js"></script>
+    </body>
+</html>

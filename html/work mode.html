@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Черный список</title>
+        <link rel="stylesheet" href="../styles.css">
+    </head>
+    <body class="work-mode centered-items blue">
+        <nav class="navigation-bar">
+            <img src="../images/icon%20128px.png" width="64">
+            <a class="elem" href="main.html">Главная</a>
+            <a class="elem" href="black%20list.html">Черный список</a>
+            <a class="elem" href="settings.html">Настройки</a>
+            <a class="elem" href="work%20mode.html">Режим работы</a>
+            <a class="elem" href="expense%20journal.html">Журнал трат</a>
+            <a class="elem" href="about%20extention.html">О расширении</a>
+        </nav>
+        
+        <main style="display: flex; justify-content: space-between">
+            <!--Description-->
+            <div class="centered-items description-block light-shadow light-blue">
+                <h1>Режим работы</h1>
+                <p>Включайте данный режим, 
+                    если вам нужно использовать
+                    социальные сети по работе,
+                    например, для поиска референсов
+                    или просмотра туториалов.</p>
+                <p>Для начала введите время в таймер,
+                    затем описание деятельности в поле
+                    не менее чем на 40 букв или цифр,
+                    и после запускаете таймер.</p>
+                <p>Также если вы проработаете все 
+                    выделенное время, то вам на счет
+                    капнет треть от времени работы!
+                    Так что лучше не выключать 
+                    режим работы досрочно.</p>
+            </div>
+            
+            <!--Timer block-->
+            <div class="work-mode-timer centered-items light-shadow light-blue">
+                <div class="timer light-shadow">00:15:00</div>
+                <!--For description of work-->
+                <div class="textarea-block">
+                    <p>Букв/цифр: <span js-char-count>0</span></p>
+                    <textarea js-textarea
+                              rows="1"
+                              cols="100"
+                              placeholder="Я потрачу это время на..."></textarea>
+                </div>
+                
+                <!--Buttons-->
+                <div class="buttons-block centered-items">
+                    <div class="timers-buttons">
+                        <button class="green-button">Запустить</button>
+                        <button class="red-button">Остановить</button>
+                    </div>
+                    <div class="presets-block">
+                        <div class="first-row">
+                            <button class="orange-button preset">5 мин</button>
+                            <button class="orange-button preset">15 мин</button>
+                            <button class="orange-button preset">30 мин</button>
+                        </div>
+                        <button class="orange-button all-acc-button">Весь счет залпом</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script src="../js/work%20mode.js">
+            
+        </script>
+    </body>
+</html>
