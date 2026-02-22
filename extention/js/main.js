@@ -103,3 +103,34 @@ cancelButtonWindow.addEventListener("click", closeModal);
 
 // ======== For timer ========
 const timer = new Timer();
+
+const timerField = document.querySelector("[timer-js]");
+
+timerField.addEventListener("input", () => {
+    if (timerField.value === '') {
+        console.log("timerField is empty or incorrect");
+        return;
+    }
+    
+    // Get data from timer
+    const timerInput = timerField.value.split(":");
+    const hours = Number.parseInt(timerInput[0]) || 0;
+    const minutes = Number.parseInt(timerInput[1]) || 0;
+    const seconds = Number.parseInt(timerInput[2]) || 0;
+    
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+        console.log("all numbers are 0", ", timeField.value = ", timerField.value);
+        return;
+    }
+    
+    if (time.toSeconds() < hours * 3600 + minutes * 60 + seconds) {
+        console.log("Not enough time");
+        return;
+    }
+    time.substract(seconds, minutes, hours);
+    account.textContent = time.toString();
+    
+    timer.set(seconds, minutes, hours);    
+});
+
+const startTimerBtn = document.querySelector("[]");
