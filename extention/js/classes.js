@@ -134,12 +134,8 @@ export class Timer {
         this.time = time;
     }
     
-    set(time) {
-        if (typeof time !== Time) return;
-        
-        const difference = this.time.substract(time.seconds, time.minutes, time.hours);
-        this.time = time;
-        return difference;
+    set(seconds, minutes, hours) {
+        this.time = new Time(hours, minutes, seconds);
     }
     
     reset() {
