@@ -142,6 +142,10 @@ export class Timer {
         this.time = new Time(hours, minutes, seconds);
     }
     
+    setTime(time) {
+        this.time = time;
+    }
+    
     reset() {
         this.time.reset();
     }
