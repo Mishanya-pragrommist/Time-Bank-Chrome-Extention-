@@ -43,15 +43,11 @@ function closeModal() {
 
 // To submit adding time
 submitButtonWindow.addEventListener("click", () => {
-    // Getting data from fields
+    // Get data from fields
     const timeInput = timeInputField.value.split(":");
-    let minutes = Number.parseInt(timeInput[0]);
-    let seconds = Number.parseInt(timeInput[1]);
+    const minutes = Number.parseInt(timeInput[0]);
+    const seconds = Number.parseInt(timeInput[1]);
     const bonusDesc = bonusDescField.value;
-    
-    // Check if numbers are not numbers
-    if (Number.isNaN(minutes)) minutes = 0;
-    if (Number.isNaN(seconds)) seconds = 0;
     
     // If user entered no time, just close window
     if (minutes === 0 && seconds === 0) {
@@ -59,20 +55,19 @@ submitButtonWindow.addEventListener("click", () => {
         return;
     } 
     
-    // Check if user entered more than 20 minutes 
-    // (20mins * 60s = 1200s).
-    // If yes, show note about it
+    // Check if user entered more than 20 minutes. 
+    // If yes, show note about it.
+    // 1200 is 20 minutes in seconds
     if (minutes * 60 + seconds > 1200) {
         noteText.textContent = "Можно добавить не более 20 минут за раз";
         noteText.style.display = "block";
         return;
     }
     
-    // Check if we have enough time on bonus account
+    // Check if there is enough time on bonus account
     if (bonus.toSeconds() < seconds + minutes * 60) {
         noteText.textContent = "Бонусов недостаточно";
         noteText.style.display = "block";
-        console.log("Not enough time on bonus account");
         return;
     }
     
@@ -83,14 +78,10 @@ submitButtonWindow.addEventListener("click", () => {
     // Substract time from bonus account
     bonus.substract(seconds, minutes);
     bonusAccount.textContent = bonus.toString();
-    
-    // For debugging
-    console.log("Entered time: ", `${minutes}:${seconds}`);
-    console.log("Bonus desc: ", bonusDesc);
-    console.log("time: ", time.toString());
-    
+   
     closeModal();
 });
+// Just hides the window
 cancelButtonWindow.addEventListener("click", closeModal);
 
 // ======== For timer ========
