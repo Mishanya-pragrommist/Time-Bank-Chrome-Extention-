@@ -390,10 +390,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     
     transition: 0.2s;
 }
-.timer:hover {
-    text-decoration: 4px underline;
-    box-shadow: var(--shadow-color) 0 6px 6px;
-}
 
 /*Buttons for starting/stopping timer and presets*/
 .buttons-block {
