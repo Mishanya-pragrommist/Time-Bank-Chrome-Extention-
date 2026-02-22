@@ -51,22 +51,20 @@
             </div>
             
             <!--Modal window for adding bonus time-->
-            <div modal-window class="light-green popup add-bonus-popup centered-items">
-                <p note-js class="note">Можно добавить не более 20 минут за раз</p>
+            <div class="light-green popup add-bonus-popup centered-items"
+                 modal-window>
+                <p class="note" note-js></p>
+                
                 <div class="time-enter-block">
-                    <div class="time-input">
-                        <input minutes-js type="number"
-                               min="0"
-                               max="20"
-                               placeholder="ММ"> :
-                        <input seconds-js 
-                               type="number"
-                               min="0"
-                               max="59"
-                               placeholder="СС">
-                    </div>
-                    <textarea bonus-desc placeholder="За что бонус?"
-                              class="bonus-desc"></textarea>
+                    <input class="time-input"
+                           type="time" 
+                           value="00:00"
+                           min="01:00"
+                           max="20:00"
+                           time-input>
+                    <textarea placeholder="За что бонус?"
+                              class="bonus-desc"
+                              bonus-desc></textarea>
                 </div>
                 <div class="add-cancel-buttons">
                     <button class="red-button" cancel-btn>Отменить</button>
