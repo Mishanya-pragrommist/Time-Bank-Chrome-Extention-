@@ -15,6 +15,7 @@ bonusAccount.textContent = bonus.toString();
 
 //Shows modal window
 addButton.addEventListener("click", () => {
+    noteText.style.display = "none";
     modalWindow.style.display = "flex";
 });
 
@@ -27,6 +28,7 @@ const bonusDescField = modalWindow.querySelector("[bonus-desc]");
 const minutesField = modalWindow.querySelector("[minutes-js]");
 const secondsField = modalWindow.querySelector("[seconds-js]");
 
+const noteText = modalWindow.querySelector("[note-js]");
 // For closing window
 
 // Removes text in inputs and makes window invisible
@@ -43,8 +45,14 @@ submitButtonWindow.addEventListener("click", () => {
     const seconds = Number.parseInt(secondsField.value);
     const bonusDesc = bonusDescField.value;
     
+    if (minutes * 60 + seconds > 1200) {
+        noteText.style.display = "block";
+        return;
+    }
+    
     // Check if we have enough time on bonus account
     if (bonus.toSeconds() < seconds + minutes * 60) {
+        noteText.style.display = "block";
         console.log("Not enough time on bonus account");
         return;
     }

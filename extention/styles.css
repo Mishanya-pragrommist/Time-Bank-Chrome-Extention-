@@ -281,6 +281,15 @@ main {
     gap: 5px;
 }
 
+.note {
+    margin: 0;
+    font-size: 14px;
+    width: 100%;
+    color: red;
+    font-style: italic;
+    display: none;
+}
+
 .time-input {
     display: flex;
     justify-content: space-between;
