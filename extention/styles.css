@@ -261,16 +261,18 @@ main {
 /*Add bonus popup*/
 
 .modal-overlay {
-    display: none; /* Скрыто по умолчанию */
-    position: fixed; /* Приклеиваем к экрану */
+    display: none;
+    position: fixed;
+    
     top: 0;
     left: 0;
-    width: 100vw; /* 100% ширины экрана */
-    height: 100vh; /* 100% высоты экрана */
-    background-color: rgba(0, 0, 0, 0.5); /* Черный цвет, 50% прозрачности */
-    z-index: 1000; /* Кладем поверх всех остальных элементов сайта */
     
-    /* Сразу центрируем внутреннее окно с помощью Flexbox */
+    width: 100vw;
+    height: 100vh;
+    
+    background-color: rgba(0, 0, 0, 0.5); /*Black*/
+    z-index: 1000;
+    
     justify-content: center;
     align-items: center;
 }
