@@ -1,7 +1,7 @@
 import { Time, Timer } from "./classes.js";
 
 // For testing
-const time = new Time(1, 20, 20);
+const maintime = new Time(1, 20, 20);
 const bonus = new Time(1);
 
 const account = document.querySelector("[main-account]");
@@ -10,7 +10,7 @@ const addButton = document.querySelector("[add-button]");
 const modalWindow = document.querySelector("[modal-window]");
 
 // To check if class Time is correctly shown
-account.textContent = time.toString();
+account.textContent = maintime.toString();
 bonusAccount.textContent = bonus.toString();
 
 //Opens modal window
@@ -89,8 +89,8 @@ submitButtonWindow.addEventListener("click", () => {
     }
     
     // Add time to main account 
-    time.add(seconds, minutes); // No need for adding hours
-    account.textContent = time.toString();
+    maintime.add(seconds, minutes); // No need for adding hours
+    account.textContent = maintime.toString();
     
     // Substract time from bonus account
     bonus.substract(seconds, minutes);
@@ -108,31 +108,58 @@ const timerField = document.querySelector("[timer-js]");
 const startTimerBtn = document.querySelector("[start-timer]");
 const stopTimerBtn = document.querySelector("[stop-timer]");
 
+function changeButtonColor(color) {
+    if (color === '')
+        startTimerBtn.classList.remove("green-button");
+    else startTimerBtn.classList.add(color);
+}
+
+timerField.addEventListener("input", () => {
+    // Read new entered time
+    let hours = 0, minutes = 0, seconds = 0;
+    
+    if (timerField.value !== "") {
+        const timerInput = timerField.value.split(":");
+        hours = Number.parseInt(timerInput[0]) || 0;
+        minutes = Number.parseInt(timerInput[1]) || 0;
+        seconds = Number.parseInt(timerInput[2]) || 0;
+    }
+    
+    // Return the old time that timer has right now
+    if (timer.hasTime()) {
+        maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
+    }
+
+    const newInputSeconds = hours * 3600 + minutes * 60 + seconds;
+    // Check if we have enough time on account
+    if (maintime.toSeconds() < newInputSeconds) {
+        console.log("Not enough time in account");
+        
+        // Return time from account
+        maintime.substract(timer.time.seconds, timer.time.minutes, timer.time.hours);
+        
+        // Update time input
+        timerField.value = timer.time.toString(); 
+        return;
+    }
+
+    maintime.substract(seconds, minutes, hours);
+
+    // Save entered time for next input
+    timer.set(seconds, minutes, hours);
+
+    // Update UI
+    account.textContent = maintime.toString();    
+    changeButtonColor("green-button");
+});
+
 startTimerBtn.addEventListener("click", () => {
     if (timerField.value === '') {
         console.log("timerField is empty or incorrect");
         return;
     }
     
-    // Get data from timer
-    const timerInput = timerField.value.split(":");
-    const hours = Number.parseInt(timerInput[0]) || 0;
-    const minutes = Number.parseInt(timerInput[1]) || 0;
-    const seconds = Number.parseInt(timerInput[2]) || 0;
-    
-    if (hours === 0 && minutes === 0 && seconds === 0) {
-        console.log("all numbers are 0", ", timeField.value = ", timerField.value);
-        return;
-    }
-    
-    if (time.toSeconds() < hours * 3600 + minutes * 60 + seconds) {
-        console.log("Not enough time");
-        return;
-    }
-    time.substract(seconds, minutes, hours);
-    account.textContent = time.toString();
-    
-    timer.set(seconds, minutes, hours);
+    changeButtonColor('');
     timer.start();
 });
 
@@ -142,11 +169,13 @@ stopTimerBtn.addEventListener("click", () => {
         return;
     }
     
+    console.log("Account: ", maintime.toString(), ", timer: ", timer.time.toString());
+
     // Add time and refresh account value
-    time.add(timer.time.seconds, 
+    maintime.add(timer.time.seconds, 
              timer.time.minutes,
-             timer.time.seconds);
-    account.textContent = time.toString();
+             timer.time.hours);
+    account.textContent = maintime.toString();
     
     timer.reset();
     timerField.value = "00:00:00";
@@ -154,12 +183,35 @@ stopTimerBtn.addEventListener("click", () => {
     timer.stop();
 });
 
-const presetButtons = document.querySelectorAll("preset-btn");
+const presetButtons = document.querySelectorAll("[preset-btn]");
 presetButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (btn.value < 0) {
-            timer.set(time);
+        const presetValue = Number(btn.value);
+        
+        // Return time from timer 
+        // to account before everything else
+        if (timer.hasTime()) {
+            maintime.add(timer.time.seconds, 
+                     timer.time.minutes,
+                     timer.time.hours);
+           
+            timer.reset();
         }
-        time.add();
+        
+        // If preset is -1, set all time we have,
+        // otherwise set time that equals to button value
+        if (presetValue < 0) {
+            timer.setTime(maintime);
+            maintime.reset();
+        }
+        else {
+            timer.set(0, presetValue, 0); 
+            maintime.substract(0, presetValue, 0); 
+        }
+        
+        account.textContent = maintime.toString();
+        timerField.value = timer.time.toString();
+        
+        changeButtonColor("green-button");
     });
 });
