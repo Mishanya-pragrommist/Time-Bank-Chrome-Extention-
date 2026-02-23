@@ -108,16 +108,34 @@ const timerField = document.querySelector("[timer-js]");
 const startTimerBtn = document.querySelector("[start-timer]");
 const stopTimerBtn = document.querySelector("[stop-timer]");
 
-function changeButtonColor(color) {
-    if (color === '')
-        startTimerBtn.classList.remove("green-button");
-    else startTimerBtn.classList.add(color);
+// Sets button color
+// Also disables it if "grey" is entered, 
+// and undisables if any other color is entered
+function changeButtonColor(btn, color) {
+    // Remove old styles
+    btn.classList.remove("green-button", "orange-button", "red-button");
+
+    // Check entered color
+    if (color === "grey") {
+        // If button is default, block it
+        btn.disabled = true;
+    }
+    else {
+        // Unblock button
+        btn.disabled = false;
+        btn.classList.add(`${color}-button`);
+    }
 }
 
+// Set basic color of start button
+changeButtonColor(startTimerBtn, "grey");
+
+// Automaticly recount account on timer input change
 timerField.addEventListener("input", () => {
-    // Read new entered time
+    // For new entered time
     let hours = 0, minutes = 0, seconds = 0;
     
+    // If input is not empty, count time in it.
     if (timerField.value !== "") {
         const timerInput = timerField.value.split(":");
         hours = Number.parseInt(timerInput[0]) || 0;
@@ -130,8 +148,10 @@ timerField.addEventListener("input", () => {
         maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
     }
 
+    // Seconds in input that user just entered
     const newInputSeconds = hours * 3600 + minutes * 60 + seconds;
-    // Check if we have enough time on account
+    
+    // Check if we have enough time in account
     if (maintime.toSeconds() < newInputSeconds) {
         console.log("Not enough time in account");
         
@@ -150,7 +170,7 @@ timerField.addEventListener("input", () => {
 
     // Update UI
     account.textContent = maintime.toString();    
-    changeButtonColor("green-button");
+    changeButtonColor(startTimerBtn, "green"); // Unblock start btn
 });
 
 startTimerBtn.addEventListener("click", () => {
@@ -159,10 +179,11 @@ startTimerBtn.addEventListener("click", () => {
         return;
     }
     
-    changeButtonColor('');
+    changeButtonColor(startTimerBtn, "grey"); // Also disables button
     timer.start();
 });
 
+// Stop button
 stopTimerBtn.addEventListener("click", () => {
     if (!timer.hasTime()) {
         console.log("Timer has no time");
@@ -177,16 +198,18 @@ stopTimerBtn.addEventListener("click", () => {
              timer.time.hours);
     account.textContent = maintime.toString();
     
+    // Reset timer and update UI
     timer.reset();
     timerField.value = "00:00:00";
     
     timer.stop();
 });
 
+// Preset buttons
 const presetButtons = document.querySelectorAll("[preset-btn]");
 presetButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        const presetValue = Number(btn.value);
+        const presetValue = Number(btn.value); // Minutes
         
         // Return time from timer 
         // to account before everything else
@@ -209,9 +232,11 @@ presetButtons.forEach(btn => {
             maintime.substract(0, presetValue, 0); 
         }
         
+        // Update UI
         account.textContent = maintime.toString();
         timerField.value = timer.time.toString();
         
-        changeButtonColor("green-button");
+        // Unblock start button
+        changeButtonColor(startTimerBtn, "green");
     });
 });
