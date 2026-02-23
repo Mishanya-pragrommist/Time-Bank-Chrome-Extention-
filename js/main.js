@@ -129,6 +129,7 @@ function changeButtonColor(btn, color) {
 
 // Set basic color of start button
 changeButtonColor(startTimerBtn, "grey");
+changeButtonColor(stopTimerBtn, "grey");
 
 // Automaticly recount account on timer input change
 timerField.addEventListener("input", () => {
@@ -180,6 +181,7 @@ startTimerBtn.addEventListener("click", () => {
     }
     
     changeButtonColor(startTimerBtn, "grey"); // Also disables button
+    changeButtonColor(stopTimerBtn, "red");
     timer.start();
 });
 
@@ -202,6 +204,7 @@ stopTimerBtn.addEventListener("click", () => {
     timer.reset();
     timerField.value = "00:00:00";
     
+    changeButtonColor(stopTimerBtn, "grey");
     timer.stop();
 });
 
