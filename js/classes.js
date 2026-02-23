@@ -6,6 +6,7 @@ export class Time {
         this.seconds = (seconds !== undefined ? seconds : 0);
     }
     
+    // Set all values to 0
     reset() {
         this.seconds = 0;
         this.minutes = 0;
@@ -58,11 +59,7 @@ export class Time {
             this.hours -= hours;
         return this;
     }
-    
-    toSeconds() {
-        return this.seconds + this.minutes * 60 + this.hours * 3600;
-    }
-    
+     
     // Rounds time to minutes in smaller side
     floor() {
         this.seconds = 0;
@@ -94,13 +91,13 @@ export class Time {
         }
     }
     
-    getTime() {
-        return new Time(this);
+    // Returns time in seconds
+    toSeconds() {
+        return this.seconds + this.minutes * 60 + this.hours * 3600;
     }
     
     // Formats time in "hh:mm:ss" format
     toString() {
-        // For adding 0 (pad)
         // Eg,  5 -> "05", 12 -> "12"
         const pad = (num) => String(num).padStart(2, '0');
         return `${pad(this.hours)}:${pad(this.minutes)}:${pad(this.seconds)}`;
@@ -138,29 +135,35 @@ export class Timer {
         return this.time.toSeconds() > 0;
     }
     
+    // Set seconds, minutes and hours separately
     set(seconds, minutes, hours) {
         this.time = new Time(hours, minutes, seconds);
     }
     
+    // Set time using Time object
     setTime(time) {
         this.time.seconds = time.seconds;
         this.time.minutes = time.minutes;
         this.time.hours = time.hours;
     }
     
+    // Set time to 0
     reset() {
         this.time.reset();
     }
     
+    // Will be written in future
     start() {
         console.log("Timer started working");
     }
     
+    // Will be written in future
     pause() {
         console.log("Timer paused");
     }
     
+    // Will be written in future
     stop() {
-        console.log("Timer stopped. Rest: ", this.time);
+        console.log("Timer stopped. Rest: ", this.time.toString());
     }
 }
