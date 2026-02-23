@@ -13,6 +13,13 @@
     "action": {
         "default_popup": "html/main.html"
     },
-    "permissions": [],
-    "background": {}
+    "permissions": [
+        "tabs",
+        "notifications",
+        "storage",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "js/background.js"
+    }
 }
