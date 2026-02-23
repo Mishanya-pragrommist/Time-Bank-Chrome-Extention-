@@ -143,7 +143,9 @@ export class Timer {
     }
     
     setTime(time) {
-        this.time = time;
+        this.time.seconds = time.seconds;
+        this.time.minutes = time.minutes;
+        this.time.hours = time.hours;
     }
     
     reset() {
