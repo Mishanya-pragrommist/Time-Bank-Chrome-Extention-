@@ -6,16 +6,18 @@ export class Time {
         this.seconds = (seconds !== undefined ? seconds : 0);
     }
     
+    // Set seconds, minutes and hours separately
     set(seconds, minutes, hours) {
-        if (typeof seconds === Time) {
-            this.seconds = time.seconds;
-            this.minutes = time.minutes;
-            this.hours = time.hours;
-            return;
-        }
         this.seconds = seconds || 0;
         this.minutes = minutes || 0;
         this.hours = hours || 0;
+    }
+    
+    // Set time using Time object
+    setTime(time) {
+        this.seconds = time.seconds;
+        this.minutes = time.minutes;
+        this.hours = time.hours;
     }
     
     // Set all values to 0
@@ -206,5 +208,3 @@ export function secondsToTime(seconds) {
     seconds %= 60;
     return new Time(hours, minutes, seconds);
 }
-
-
