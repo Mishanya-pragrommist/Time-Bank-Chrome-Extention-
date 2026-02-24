@@ -14,28 +14,32 @@ export class Time {
     }
     
     add(seconds, minutes, hours) {
-        this.seconds += seconds;
-        if (this.seconds >= 60) {
-            const extraMinutes = Math.floor(this.seconds / 60);
-            this.seconds -= 60 * extraMinutes;
-            this.minutes += extraMinutes;
+        if (seconds !== undefined) {
+            this.seconds += seconds;
+            if (this.seconds >= 60) {
+                const extraMinutes = Math.floor(this.seconds / 60);
+                this.seconds -= 60 * extraMinutes;
+                this.minutes += extraMinutes;
+            }
         }
         
-        if (minutes !== undefined) this.minutes += minutes;
-        
-        if (this.minutes >= 60) {
-            const extraHours =  Math.floor(this.minutes / 60);
-            this.minutes -= 60 * extraHours;
-            this.hours += extraHours;
-        }
+        if (minutes !== undefined) {
+            this.minutes += minutes;
+            if (this.minutes >= 60) {
+                const extraHours =  Math.floor(this.minutes / 60);
+                this.minutes -= 60 * extraHours;
+                this.hours += extraHours;
+            }
+        } 
         
         if (hours !== undefined) this.hours += hours;
     }
     
     substract(seconds, minutes, hours) {
-        if (this.toSeconds < (seconds + minutes * 60 + hours * 3600)) {
-            console.log("Not enough time");
-            return;
+        // If not enough time, an error is thrown
+        if (this.toSeconds() < 
+            (seconds + minutes * 60 + hours * 3600)) {
+            throw new RangeError("Недостаточно времени для снятия");
         }
         
         this.seconds -= seconds;
@@ -80,6 +84,11 @@ export class Time {
     
     // Decreases time by 1 second
     down() {
+        if (this.hours <= 0 &&
+            this.minutes <= 0 &&
+            this.seconds <= 0) {
+            throw new RangeError("Недостаточно времени");
+        }
         this.seconds--;
         if (this.seconds < 0) {
             this.seconds = 59;
