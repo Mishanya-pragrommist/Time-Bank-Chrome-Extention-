@@ -106,6 +106,7 @@ const timer = new Timer(0, 0, 0);
 
 const timerField = document.querySelector("[timer-js]");
 const startTimerBtn = document.querySelector("[start-timer]");
+const pauseTimerBtn = document.querySelector("[pause-timer]");
 const stopTimerBtn = document.querySelector("[stop-timer]");
 
 // Sets button color
@@ -192,7 +193,20 @@ startTimerBtn.addEventListener("click", () => {
     changeButtonColor(stopTimerBtn, "red");
     
     timerField.disabled = true; // Block input
+    
+    // Hide start button
+    startTimerBtn.style.display = "none";
+    
+    // Show up pause button
+    changeButtonColor(pauseTimerBtn, "orange");
+    pauseTimerBtn.style.display = "block";
     timer.start();
+});
+
+pauseTimerBtn.addEventListener("click", () => {
+    pauseTimerBtn.textContent = 
+        (pauseTimerBtn.textContent === "Пауза") ? 
+        "Продолжить" : "Пауза";
 });
 
 // Stop button
