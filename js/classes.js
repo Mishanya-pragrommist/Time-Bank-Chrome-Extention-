@@ -6,6 +6,18 @@ export class Time {
         this.seconds = (seconds !== undefined ? seconds : 0);
     }
     
+    set(seconds, minutes, hours) {
+        if (typeof seconds === Time) {
+            this.seconds = time.seconds;
+            this.minutes = time.minutes;
+            this.hours = time.hours;
+            return;
+        }
+        this.seconds = seconds || 0;
+        this.minutes = minutes || 0;
+        this.hours = hours || 0;
+    }
+    
     // Set all values to 0
     reset() {
         this.seconds = 0;
@@ -138,6 +150,12 @@ export class Transaction {
 export class Timer {
     constructor(hours, minutes, seconds) {
         this.time = new Time(hours, minutes, seconds);
+        // True if timer runs
+        this.isRunning = false;
+    }
+    
+    isRunning() {
+        return this.isRunning;
     }
     
     hasTime() {
@@ -163,16 +181,30 @@ export class Timer {
     
     // Will be written in future
     start() {
-        console.log("Timer started working");
+        this.isRunning = true;
+        console.log("Timer started working. isRunning: ", this.isRunning);
     }
     
     // Will be written in future
     pause() {
-        console.log("Timer paused");
+        this.isRunning = false;
+        console.log("Timer paused. isRunning: ", this.isRunning);
     }
     
     // Will be written in future
     stop() {
-        console.log("Timer stopped. Rest: ", this.time.toString());
+        this.isRunning = false;
+        console.log("Timer stopped. Rest: ", this.time.toString(), "; isRunning: ", this.isRunning);
     }
 }
+
+// Convert seconds to Time object
+export function secondsToTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    const minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+    return new Time(hours, minutes, seconds);
+}
+
+
