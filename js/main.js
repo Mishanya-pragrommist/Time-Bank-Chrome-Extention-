@@ -170,8 +170,15 @@ timerField.addEventListener("input", () => {
     timer.set(seconds, minutes, hours);
 
     // Update UI
-    account.textContent = maintime.toString();    
-    changeButtonColor(startTimerBtn, "green"); // Unblock start btn
+    account.textContent = maintime.toString();
+    
+    // If there is time in input, unblock start button.
+    // Otherwise, block the button 
+    changeButtonColor(startTimerBtn, 
+                      (seconds > 0 ||
+                       minutes > 0 || 
+                       hours > 0) ? 
+                      "green" : "grey");
 });
 
 startTimerBtn.addEventListener("click", () => {
@@ -180,13 +187,17 @@ startTimerBtn.addEventListener("click", () => {
         return;
     }
     
-    changeButtonColor(startTimerBtn, "grey"); // Also disables button
+    // Block start btn and unblock stop btn
+    changeButtonColor(startTimerBtn, "grey");
     changeButtonColor(stopTimerBtn, "red");
+    
+    timerField.disabled = true; // Block input
     timer.start();
 });
 
 // Stop button
 stopTimerBtn.addEventListener("click", () => {
+    timerField.disabled = false; // Unblock input
     if (!timer.hasTime()) {
         console.log("Timer has no time");
         return;
@@ -205,6 +216,7 @@ stopTimerBtn.addEventListener("click", () => {
     timerField.value = "00:00:00";
     
     changeButtonColor(stopTimerBtn, "grey");
+    
     timer.stop();
 });
 
