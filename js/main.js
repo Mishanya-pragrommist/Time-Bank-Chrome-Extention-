@@ -1,14 +1,12 @@
-import { Time, Timer } from "./classes.js";
+import * as Classes from "./classes.js";
 
 /* =================================================================================================================
    1. SETTINGS AND GLOBAL STATE
    ================================================================================================================= */
 const MAX_BONUS_SECONDS = 1200; // 20 minutes in seconds
-
-// Time objects. Will be replaced in background script
-const maintime = new Time(0, 20, 0);
-const bonus = new Time(1);
-const timer = new Timer(0, 0, 0);
+let maintime;
+let bonusTime;
+const timer = new Classes.Timer();
 
 /* =================================================================================================================
    2. DOM ELEMENTS
@@ -37,22 +35,33 @@ const stopTimerBtn = document.querySelector("[stop-timer]");
 const presetButtons = document.querySelectorAll("[preset-btn]");
 
 
-/* ====================================
-   3. INITIALIZATION
-   ==================================== */
-
-// Setting time and bonus (will be replaced 
-// in background script in future)
-account.textContent = maintime.toString();
-bonusAccount.textContent = bonus.toString();
-
-changeButtonColor(startTimerBtn, "grey");
-changeButtonColor(stopTimerBtn, "grey");
-
-
 /* ==========================================================================================================
    4. HELPER FUNCTIONS
    ========================================================================================================== */
+
+// Sends data to background script
+function syncDataWithBackground() {
+    // Pack data into object with numbers
+    const dataToSend = {
+        action: "UPDATE_TIME_DATA", // Command for background
+        payload: {
+            mainSeconds: maintime.toSeconds(),
+            bonusSeconds: bonusTime.toSeconds(),
+            timerSeconds: timer.hasTime() ? timer.time.toSeconds() : 0, 
+            isTimerRunning: timer.isRunning 
+        }
+    };
+
+    // Send data
+    chrome.runtime.sendMessage(dataToSend, (response) => {
+        if (chrome.runtime.lastError) {
+            console.warn("Фоновый скрипт спит или недоступен: ", chrome.runtime.lastError.message);
+            return;
+        }
+        
+        console.log("Фон ответил: ", response.status);
+    });
+}
 
 // Change button color (accepts "green", "orange", "grey", "red")
 function changeButtonColor(btn, color) {
@@ -75,6 +84,28 @@ function closeModal() {
     noteText.style.display = "none"; // Hide error message on close
 }
 
+
+/* ====================================
+   4. INITIALIZATION
+   ==================================== */
+
+changeButtonColor(startTimerBtn, "grey");
+changeButtonColor(stopTimerBtn, "grey");
+
+// Get data from background script
+chrome.runtime.sendMessage({ action: "GET_TIME_DATA" }, (response) => {
+    if (response) {
+        console.log("Данные из фона получены:", response);
+        
+        maintime = Classes.secondsToTime(response.mainSeconds);
+        timer.time = Classes.secondsToTime(response.timerSeconds);
+        bonusTime = Classes.secondsToTime(response.bonusSeconds);
+        
+        account.textContent = maintime.toString();
+        bonusAccount.textContent = bonusTime.toString();
+        timerField.value = timer.time.toString();
+    }
+});
 
 /* ==================================================================================================================
    5. EVENT LISTENERS: MODAL WINDOW
@@ -127,7 +158,7 @@ submitButtonWindow.addEventListener("click", () => {
         return;
     }
     // If there is not enough bonuses
-    if (bonus.toSeconds() < seconds + minutes * 60) {
+    if (bonusTime.toSeconds() < seconds + minutes * 60) {
         noteText.textContent = "Бонусов, увы, недостаточно";
         noteText.style.display = "block";
         return;
@@ -137,10 +168,11 @@ submitButtonWindow.addEventListener("click", () => {
     maintime.add(seconds, minutes);
     account.textContent = maintime.toString();
     
-    bonus.substract(seconds, minutes);
-    bonusAccount.textContent = bonus.toString();
+    bonusTime.substract(seconds, minutes);
+    bonusAccount.textContent = bonusTime.toString();
     
     closeModal();
+    syncDataWithBackground();
 });
 
 
@@ -183,6 +215,8 @@ timerField.addEventListener("input", () => {
     // If timer has no time, block start button
     const hasTimeInTimer = (seconds > 0 || minutes > 0 || hours > 0);
     changeButtonColor(startTimerBtn, hasTimeInTimer ? "green" : "grey");
+    
+    syncDataWithBackground();
 });
 
 // Presets
@@ -214,6 +248,8 @@ presetButtons.forEach(btn => {
         account.textContent = maintime.toString();
         timerField.value = timer.time.toString();
         changeButtonColor(startTimerBtn, "green");
+        
+        syncDataWithBackground();
     });
 });
 
@@ -233,19 +269,22 @@ startTimerBtn.addEventListener("click", () => {
     presetButtons.forEach(btn => changeButtonColor(btn, "grey"));
     
     timer.start();
+    syncDataWithBackground();
 });
 
 // Pause button
 pauseTimerBtn.addEventListener("click", () => {
-    if (pauseTimerBtn.textContent === "Пауза") { // Consider translating UI text later
-        pauseTimerBtn.textContent = "Продолжить"; // Same here
+    if (pauseTimerBtn.textContent === "Пауза") {
+        pauseTimerBtn.textContent = "Продолжить";
         changeButtonColor(pauseTimerBtn, "green");
         timer.pause();
-    } else {
+    } 
+    else {
         pauseTimerBtn.textContent = "Пауза";
         changeButtonColor(pauseTimerBtn, "orange");
         timer.resume(); 
     }
+    syncDataWithBackground();
 });
 
 // Stop button
@@ -272,4 +311,5 @@ stopTimerBtn.addEventListener("click", () => {
     
     // Unblock presets
     presetButtons.forEach(btn => changeButtonColor(btn, "orange"));
+    syncDataWithBackground();
 });
