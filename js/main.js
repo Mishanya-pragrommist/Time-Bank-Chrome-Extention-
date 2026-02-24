@@ -1,143 +1,163 @@
 import { Time, Timer } from "./classes.js";
 
-// For testing
-const maintime = new Time(1, 20, 20);
-const bonus = new Time(1);
+/* =================================================================================================================
+   1. SETTINGS AND GLOBAL STATE
+   ================================================================================================================= */
+const MAX_BONUS_SECONDS = 1200; // 20 minutes in seconds
 
+// Time objects. Will be replaced in background script
+const maintime = new Time(0, 20, 0);
+const bonus = new Time(1);
+const timer = new Timer(0, 0, 0);
+
+/* =================================================================================================================
+   2. DOM ELEMENTS
+   ================================================================================================================= */
+// --- Main account ---
 const account = document.querySelector("[main-account]");
 const bonusAccount = document.querySelector("[bonus-account]");
 const addButton = document.querySelector("[add-button]");
+
+// --- Modal window for adding bonuses ---
 const modalWindow = document.querySelector("[modal-window]");
 
-// To check if class Time is correctly shown
-account.textContent = maintime.toString();
-bonusAccount.textContent = bonus.toString();
+const timeInputField = modalWindow.querySelector("[time-input]");
+const bonusInput = modalWindow.querySelector("[time-input]");
+const bonusDescField = modalWindow.querySelector("[bonus-desc]");
+const noteText = modalWindow.querySelector("[note-js]");
 
-//Opens modal window
-addButton.addEventListener("click", () => {
-    noteText.style.display = "none";
-    modalWindow.style.display = "flex";
-});
-
-// Buttons in modal window
 const submitButtonWindow = modalWindow.querySelector("[submit-btn]");
 const cancelButtonWindow = modalWindow.querySelector("[cancel-btn]");
 
-// Fields in modal window to fill
-const bonusDescField = modalWindow.querySelector("[bonus-desc]");
-const timeInputField = modalWindow.querySelector("[time-input]");
+// --- Timer ---
+const timerField = document.querySelector("[timer-js]");
+const startTimerBtn = document.querySelector("[start-timer]");
+const pauseTimerBtn = document.querySelector("[pause-timer]");
+const stopTimerBtn = document.querySelector("[stop-timer]");
+const presetButtons = document.querySelectorAll("[preset-btn]");
 
-// Text that shows up if:
-//      not enough time on bonus account;
-//      user entered more than 20 minutes.
-const noteText = modalWindow.querySelector("[note-js]");
 
-// === For closing window ===
+/* ====================================
+   3. INITIALIZATION
+   ==================================== */
 
-// Removes text in inputs and hides modal window
+// Setting time and bonus (will be replaced 
+// in background script in future)
+account.textContent = maintime.toString();
+bonusAccount.textContent = bonus.toString();
+
+changeButtonColor(startTimerBtn, "grey");
+changeButtonColor(stopTimerBtn, "grey");
+
+
+/* ==========================================================================================================
+   4. HELPER FUNCTIONS
+   ========================================================================================================== */
+
+// Change button color (accepts "green", "orange", "grey", "red")
+function changeButtonColor(btn, color) {
+    btn.classList.remove("green-button", "orange-button", "red-button");
+
+    if (color === "grey") {
+        btn.disabled = true;
+    } 
+    else {
+        btn.disabled = false;
+        btn.classList.add(`${color}-button`);
+    }
+}
+
+// Close modal window and clear fields
 function closeModal() {
     modalWindow.style.display = "none";
     bonusDescField.value = '';
-    timeInputField.value="00:00";
+    timeInputField.value = "00:00";
+    noteText.style.display = "none"; // Hide error message on close
 }
 
-// To close window when user clicked outside the window
-modalWindow.addEventListener("click", (event) => {
-    if (event.target === modalWindow) {
-        closeModal();
-        console.log("Окно закрыто по клику вне области");
+
+/* ==================================================================================================================
+   5. EVENT LISTENERS: MODAL WINDOW
+   ================================================================================================================== */
+
+// Open window
+addButton.addEventListener("click", () => {
+    modalWindow.style.display = "flex";
+});
+
+// Input validation in modal window
+bonusInput.addEventListener("input", () => {
+    if (bonusInput.value === "") {
+        bonusInput.value = "00:00";
+        return;
+    }
+    
+    const numbers = bonusInput.value.split(":");
+    const minutes = Number.parseInt(numbers[0]) || 0;
+    const seconds = Number.parseInt(numbers[1]) || 0;
+    
+    if (minutes * 60 + seconds > MAX_BONUS_SECONDS) {
+        bonusInput.value = "20:00";
     }
 });
 
-// To submit adding time
+// Close on click outside the window
+modalWindow.addEventListener("click", (event) => {
+    if (event.target === modalWindow) closeModal();
+});
+
+// Cancel button
+cancelButtonWindow.addEventListener("click", closeModal);
+
+// Submit adding time
 submitButtonWindow.addEventListener("click", () => {
-    // If entered time contains empty number 
-    // like "--:12", "12:--" or "--:--"
     if (timeInputField.value === '') {
         noteText.textContent = "Во всех полях должны быть числа (хотя бы нолики)";
         noteText.style.display = "block";
         return;
     }
     
-    // Get data from fields
     const timeInput = timeInputField.value.split(":");
-    const minutes = Number.parseInt(timeInput[0]);
-    const seconds = Number.parseInt(timeInput[1]);
-    const bonusDesc = bonusDescField.value; // Will be used in localStorage
-    
-    
-    // If user entered no time, just close window
+    const minutes = Number.parseInt(timeInput[0]) || 0;
+    const seconds = Number.parseInt(timeInput[1]) || 0;
+    // const bonusDesc = bonusDescField.value; // For localStorage in the future
+    // If entered no time, just close window
     if (minutes === 0 && seconds === 0) {
         closeModal();
         return;
     } 
-    
-    // Check if user entered more than 20 minutes. 
-    // If yes, show note about it.
-    // 1200 is 20 minutes in seconds
-    if (minutes * 60 + seconds > 1200) {
+    // If account has not enough time
+    if (minutes * 60 + seconds > MAX_BONUS_SECONDS) {
         noteText.textContent = "Можно добавить не более 20 минут за раз";
         noteText.style.display = "block";
         return;
     }
-    
-    // Check if there is enough time on bonus account
+    // If there is not enough bonuses
     if (bonus.toSeconds() < seconds + minutes * 60) {
         noteText.textContent = "Бонусов, увы, недостаточно";
         noteText.style.display = "block";
         return;
     }
     
-    // Add time to main account 
-    maintime.add(seconds, minutes); // No need for adding hours
+    // Update accounts
+    maintime.add(seconds, minutes);
     account.textContent = maintime.toString();
     
-    // Substract time from bonus account
     bonus.substract(seconds, minutes);
     bonusAccount.textContent = bonus.toString();
-   
+    
     closeModal();
 });
-// Just hides the window
-cancelButtonWindow.addEventListener("click", closeModal);
 
-// ======== For timer ========
-const timer = new Timer(0, 0, 0);
 
-const timerField = document.querySelector("[timer-js]");
-const startTimerBtn = document.querySelector("[start-timer]");
-const pauseTimerBtn = document.querySelector("[pause-timer]");
-const stopTimerBtn = document.querySelector("[stop-timer]");
+/* ===================================
+   6. EVENT LISTENERS: TIMER
+   =================================== */
 
-// Sets button color
-// Also disables it if "grey" is entered, 
-// and undisables if any other color is entered
-function changeButtonColor(btn, color) {
-    // Remove old styles
-    btn.classList.remove("green-button", "orange-button", "red-button");
-
-    // Check entered color
-    if (color === "grey") {
-        // If button is default, block it
-        btn.disabled = true;
-    }
-    else {
-        // Unblock button
-        btn.disabled = false;
-        btn.classList.add(`${color}-button`);
-    }
-}
-
-// Set basic color of start button
-changeButtonColor(startTimerBtn, "grey");
-changeButtonColor(stopTimerBtn, "grey");
-
-// Automaticly recount account on timer input change
+// Manual time input in timer
 timerField.addEventListener("input", () => {
-    // For new entered time
     let hours = 0, minutes = 0, seconds = 0;
     
-    // If input is not empty, count time in it.
     if (timerField.value !== "") {
         const timerInput = timerField.value.split(":");
         hours = Number.parseInt(timerInput[0]) || 0;
@@ -145,127 +165,117 @@ timerField.addEventListener("input", () => {
         seconds = Number.parseInt(timerInput[2]) || 0;
     }
     
-    // Return the old time that timer has right now
+    // Return old time to balance
     if (timer.hasTime()) {
         maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
     }
 
-    // Seconds in input that user just entered
     const newInputSeconds = hours * 3600 + minutes * 60 + seconds;
     
-    // Check if we have enough time in account
+    // Check balance
     if (maintime.toSeconds() < newInputSeconds) {
-        console.log("Not enough time in account");
-        
-        // Return time from account
         maintime.substract(timer.time.seconds, timer.time.minutes, timer.time.hours);
-        
-        // Update time input
         timerField.value = timer.time.toString(); 
         return;
     }
-
+    
+    // Subtract new time
     maintime.substract(seconds, minutes, hours);
-
-    // Save entered time for next input
     timer.set(seconds, minutes, hours);
-
+    
     // Update UI
     account.textContent = maintime.toString();
     
-    // If there is time in input, unblock start button.
-    // Otherwise, block the button 
-    changeButtonColor(startTimerBtn, 
-                      (seconds > 0 ||
-                       minutes > 0 || 
-                       hours > 0) ? 
-                      "green" : "grey");
+    // If timer has no time, block start button
+    const hasTimeInTimer = (seconds > 0 || minutes > 0 || hours > 0);
+    changeButtonColor(startTimerBtn, hasTimeInTimer ? "green" : "grey");
 });
 
-startTimerBtn.addEventListener("click", () => {
-    if (timerField.value === '') {
-        console.log("timerField is empty or incorrect");
-        return;
-    }
-    
-    // Block start btn and unblock stop btn
-    changeButtonColor(startTimerBtn, "grey");
-    changeButtonColor(stopTimerBtn, "red");
-    
-    timerField.disabled = true; // Block input
-    
-    // Hide start button
-    startTimerBtn.style.display = "none";
-    
-    // Show up pause button
-    changeButtonColor(pauseTimerBtn, "orange");
-    pauseTimerBtn.style.display = "block";
-    timer.start();
-});
-
-pauseTimerBtn.addEventListener("click", () => {
-    pauseTimerBtn.textContent = 
-        (pauseTimerBtn.textContent === "Пауза") ? 
-        "Продолжить" : "Пауза";
-});
-
-// Stop button
-stopTimerBtn.addEventListener("click", () => {
-    timerField.disabled = false; // Unblock input
-    if (!timer.hasTime()) {
-        console.log("Timer has no time");
-        return;
-    }
-    
-    console.log("Account: ", maintime.toString(), ", timer: ", timer.time.toString());
-
-    // Add time and refresh account value
-    maintime.add(timer.time.seconds, 
-             timer.time.minutes,
-             timer.time.hours);
-    account.textContent = maintime.toString();
-    
-    // Reset timer and update UI
-    timer.reset();
-    timerField.value = "00:00:00";
-    
-    changeButtonColor(stopTimerBtn, "grey");
-    
-    timer.stop();
-});
-
-// Preset buttons
-const presetButtons = document.querySelectorAll("[preset-btn]");
+// Presets
 presetButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        const presetValue = Number(btn.value); // Minutes
+        const presetValue = Number(btn.value); // Value in minutes
         
-        // Return time from timer 
-        // to account before everything else
         if (timer.hasTime()) {
-            maintime.add(timer.time.seconds, 
-                     timer.time.minutes,
-                     timer.time.hours);
-           
+            maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
             timer.reset();
         }
         
-        // If preset is -1, set all time we have,
-        // otherwise set time that equals to button value
         if (presetValue < 0) {
             timer.setTime(maintime);
             maintime.reset();
-        }
+        } 
         else {
-            timer.set(0, presetValue, 0); 
-            maintime.substract(0, presetValue, 0); 
+            try {
+                maintime.substract(0, presetValue, 0); 
+                timer.set(0, presetValue, 0);
+            }
+            catch (error) {
+                console.log(error.message);
+                return; 
+            }
         }
         
         // Update UI
         account.textContent = maintime.toString();
         timerField.value = timer.time.toString();
-        
-        // Unblock start button
         changeButtonColor(startTimerBtn, "green");
     });
+});
+
+// Start timer button
+startTimerBtn.addEventListener("click", () => {
+    if (timerField.value === '' || !timer.hasTime()) return; 
+    
+    changeButtonColor(startTimerBtn, "grey");
+    changeButtonColor(stopTimerBtn, "red");
+    
+    timerField.disabled = true;
+    startTimerBtn.style.display = "none";
+    
+    changeButtonColor(pauseTimerBtn, "orange");
+    pauseTimerBtn.style.display = "block";
+    
+    presetButtons.forEach(btn => changeButtonColor(btn, "grey"));
+    
+    timer.start();
+});
+
+// Pause button
+pauseTimerBtn.addEventListener("click", () => {
+    if (pauseTimerBtn.textContent === "Пауза") { // Consider translating UI text later
+        pauseTimerBtn.textContent = "Продолжить"; // Same here
+        changeButtonColor(pauseTimerBtn, "green");
+        timer.pause();
+    } else {
+        pauseTimerBtn.textContent = "Пауза";
+        changeButtonColor(pauseTimerBtn, "orange");
+        timer.resume(); 
+    }
+});
+
+// Stop button
+stopTimerBtn.addEventListener("click", () => {
+    if (!timer.hasTime()) return;
+    
+    timerField.disabled = false;
+    
+    // Return remaining time to account
+    maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
+    account.textContent = maintime.toString();
+    
+    timer.reset();
+    timer.stop();
+    
+    // Reset UI
+    timerField.value = "00:00:00";
+    changeButtonColor(stopTimerBtn, "grey"); 
+    
+    // Hide pause and show start btn
+    pauseTimerBtn.style.display = "none";
+    pauseTimerBtn.textContent = "Пауза";
+    startTimerBtn.style.display = "block";
+    
+    // Unblock presets
+    presetButtons.forEach(btn => changeButtonColor(btn, "orange"));
 });
