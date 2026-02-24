@@ -39,11 +39,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "UPDATE_TIME_DATA") {
         const payload = request.payload;
         
-        // Распаковываем секунды обратно в классы
-        
-        maintime.set(Classes.secondsToTime(payload.mainSeconds));
-        bonustime.set(Classes.secondsToTime(payload.bonusSeconds)); // Обновляем бонусный счет
-        timer.setTime(Classes.secondsToTime(payload.timerSeconds)); // Обновляем таймер
+        // Convert received seconds to Time objects
+        maintime.setTime(Classes.secondsToTime(payload.mainSeconds));
+        bonustime.setTime(Classes.secondsToTime(payload.bonusSeconds));
+        timer.setTime(Classes.secondsToTime(payload.timerSeconds));
         
         console.log("Данные в фоне успешно синхронизированы!");
         console.log("Account: ", maintime.toString(), ", bonus: ", bonustime.toString(), ", timer: ", timer.time.toString());
