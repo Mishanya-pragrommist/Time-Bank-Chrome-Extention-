@@ -111,12 +111,6 @@ cancelButtonWindow.addEventListener("click", closeModal);
 
 // Submit adding time
 submitButtonWindow.addEventListener("click", () => {
-    if (timeInputField.value === '') {
-        noteText.textContent = "Во всех полях должны быть числа (хотя бы нолики)";
-        noteText.style.display = "block";
-        return;
-    }
-    
     const timeInput = timeInputField.value.split(":");
     const minutes = Number.parseInt(timeInput[0]) || 0;
     const seconds = Number.parseInt(timeInput[1]) || 0;
