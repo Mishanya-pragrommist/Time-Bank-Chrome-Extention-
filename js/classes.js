@@ -150,14 +150,14 @@ export class Transaction {
 }
 
 export class Timer {
+    static IDLE() { return 1; }
+    static RUNNING() { return 2; }
+    static PAUSED() { return 3; }
+    
     constructor(hours, minutes, seconds) {
         this.time = new Time(hours, minutes, seconds);
-        // True if timer runs
-        this.isRunning = false;
-    }
-    
-    isRunning() {
-        return this.isRunning;
+        
+        this.state = Timer.IDLE();
     }
     
     hasTime() {
@@ -179,24 +179,25 @@ export class Timer {
     // Set time to 0
     reset() {
         this.time.reset();
+        this.state = Timer.IDLE();
     }
     
     // Will be written in future
     start() {
-        this.isRunning = true;
-        console.log("Timer started working. isRunning: ", this.isRunning);
+        this.state = Timer.RUNNING();
+        console.log("Timer started working. state: ", this.state);
     }
     
     // Will be written in future
     pause() {
-        this.isRunning = false;
-        console.log("Timer paused. isRunning: ", this.isRunning);
+        this.state = Timer.PAUSED();
+        console.log("Timer paused. isRunning: ", this.state);
     }
     
     // Will be written in future
     stop() {
-        this.isRunning = false;
-        console.log("Timer stopped. Rest: ", this.time.toString(), "; isRunning: ", this.isRunning);
+        this.state = Timer.IDLE();
+        console.log("Timer stopped. Rest: ", this.time.toString(), "; state: ", this.state);
     }
 }
 
