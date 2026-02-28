@@ -43,6 +43,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         maintime.setTime(Classes.secondsToTime(payload.mainSeconds));
         bonustime.setTime(Classes.secondsToTime(payload.bonusSeconds));
         timer.setTime(Classes.secondsToTime(payload.timerSeconds));
+        timer.state = payload.timerState;
         
         console.log("Данные в фоне успешно синхронизированы!");
         console.log("Account: ", maintime.toString(), ", bonus: ", bonustime.toString(), ", timer: ", timer.time.toString());
