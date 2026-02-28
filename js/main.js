@@ -39,19 +39,19 @@ const presetButtons = document.querySelectorAll("[preset-btn]");
    4. HELPER FUNCTIONS
    ========================================================================================================== */
 
-// Sends data to background script
-function syncDataWithBackground() {
+// Sends entered data to background script
+function syncDataWithBackground(datatoSend) {
     // Pack data into object with numbers
     const dataToSend = {
         action: "UPDATE_TIME_DATA", // Command for background
         payload: {
             mainSeconds: maintime.toSeconds(),
             bonusSeconds: bonusTime.toSeconds(),
-            timerSeconds: timer.hasTime() ? timer.time.toSeconds() : 0, 
-            isTimerRunning: timer.isRunning 
+            timerSeconds: timer.hasTime() ? timer.time.toSeconds() : 0,
+            timerState: timer.state
         }
     };
-
+    
     // Send data
     chrome.runtime.sendMessage(dataToSend, (response) => {
         if (chrome.runtime.lastError) {
