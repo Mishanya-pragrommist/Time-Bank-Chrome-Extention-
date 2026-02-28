@@ -27,6 +27,7 @@ export class Time {
         this.hours = 0;
     }
     
+    // Add seconds, minutes and hours separately
     add(seconds, minutes, hours) {
         if (seconds !== undefined) {
             this.seconds += seconds;
@@ -49,8 +50,9 @@ export class Time {
         if (hours !== undefined) this.hours += hours;
     }
     
+    // Substract time. If not enough time, a RangeError is thrown
     substract(seconds, minutes, hours) {
-        // If not enough time, an error is thrown
+        // If not enough time, throw an error
         if (this.toSeconds() < 
             (seconds + minutes * 60 + hours * 3600)) {
             throw new RangeError("Недостаточно времени для снятия");
@@ -64,8 +66,7 @@ export class Time {
             this.seconds = 60 * extraMinutes - this.seconds;
         }
         
-        if (minutes !== undefined && minutes > 0)
-            this.minutes -= minutes;
+        if (minutes !== undefined && minutes > 0) this.minutes -= minutes;
         if (this.minutes < 0) {
             this.minutes *= -1;
             const extraHours = Math.ceil(this.minutes / 60);
@@ -73,17 +74,14 @@ export class Time {
             this.minutes = 60 * extraHours - this.minutes;
         }
         
-        if (hours !== undefined && hours > 0) 
-            this.hours -= hours;
-        return this;
+        if (hours !== undefined && hours > 0)  this.hours -= hours;
     }
      
-    // Rounds time to minutes in smaller side
-    floor() {
-        this.seconds = 0;
-    }
+    // Round time to minutes in smaller side.
+    // Basicly, just make seconds 0
+    floor() { this.seconds = 0; }
     
-    // Increases time by 1 second
+    // Increase time by 1 second
     up() {
         this.seconds++;
         if (this.seconds >= 60) {
@@ -96,7 +94,7 @@ export class Time {
         }
     }
     
-    // Decreases time by 1 second
+    // Decrease time by 1 second. If not enough time, a RangeError is thrown
     down() {
         if (this.hours <= 0 &&
             this.minutes <= 0 &&
@@ -114,12 +112,12 @@ export class Time {
         }
     }
     
-    // Returns time in seconds
+    // Return time in seconds
     toSeconds() {
         return this.seconds + this.minutes * 60 + this.hours * 3600;
     }
     
-    // Formats time in "hh:mm:ss" format
+    // Format time in "hh:mm:ss" format
     toString() {
         // Eg,  5 -> "05", 12 -> "12"
         const pad = (num) => String(num).padStart(2, '0');
@@ -135,7 +133,7 @@ export const Type = Object.freeze({
     EVENT: 3
 });
 
-//Represents one action
+//Represents one action with time
 export class Transaction {
     constructor(timestamp, type, description, time) {
         if (timestamp instanceof Date) this.timestamp = timestamp;
@@ -144,25 +142,30 @@ export class Transaction {
         if (time !== undefined && time instanceof Time) this.amount = time;
     }
     
+    // Format transaction for saving in time log
     toString() {
         return `${this.timestamp} ${this.type} ${this.description}`;
     }
 }
 
 export class Timer {
+    
+    // Set current timer state as IDLE (equals to 1)
     static IDLE() { return 1; }
+    
+    // Set current timer state as RUNNING (equals to 2)
     static RUNNING() { return 2; }
+    
+    // Set current timer state as PAUSED (equals to 3)
     static PAUSED() { return 3; }
     
     constructor(hours, minutes, seconds) {
         this.time = new Time(hours, minutes, seconds);
-        
         this.state = Timer.IDLE();
     }
     
-    hasTime() {
-        return this.time.toSeconds() > 0;
-    }
+    // Check if timer has time
+    hasTime() { return this.time.toSeconds() > 0; }
     
     // Set seconds, minutes and hours separately
     set(seconds, minutes, hours) {
