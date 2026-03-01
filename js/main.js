@@ -36,7 +36,7 @@ const presetButtons = document.querySelectorAll("[preset-btn]");
 
 
 /* ==========================================================================================================
-   4. HELPER FUNCTIONS
+   3. HELPER FUNCTIONS
    ========================================================================================================== */
 
 // Sends entered data to background script
@@ -48,7 +48,12 @@ function syncDataWithBackground(datatoSend) {
             mainSeconds: maintime.toSeconds(),
             bonusSeconds: bonusTime.toSeconds(),
             timerSeconds: timer.hasTime() ? timer.time.toSeconds() : 0,
-            timerState: timer.state
+            timerState: timer.state,
+            
+            startTimerBtnColor: startTimerBtn.color,
+            stopTimerBtnColor: stopTimerBtn.color,
+            pauseTimerBtnColor: pauseTimerBtn.color,
+            presetButtonsColor: presetButtons[0].color
         }
     };
     
@@ -74,6 +79,7 @@ function changeButtonColor(btn, color) {
         btn.disabled = false;
         btn.classList.add(`${color}-button`);
     }
+    btn.color = color;
 }
 
 // Close modal window and clear fields
@@ -104,6 +110,11 @@ chrome.runtime.sendMessage({ action: "GET_TIME_DATA" }, (response) => {
         account.textContent = maintime.toString();
         bonusAccount.textContent = bonusTime.toString();
         timerField.value = timer.time.toString();
+        
+        changeButtonColor(startTimerBtn, response.startTimerBtnColor);
+        changeButtonColor(stopTimerBtn, response.stopTimerBtnColor);
+        changeButtonColor(pauseTimerBtn, response.pauseTimerBtnColor);
+        presetButtons.forEach(btn => changeButtonColor(btn, response.presetsColor));
     }
 });
 
