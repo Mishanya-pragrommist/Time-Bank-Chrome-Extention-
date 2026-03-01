@@ -197,6 +197,11 @@ export class Timer {
         console.log("Timer paused. isRunning: ", this.state);
     }
     
+    resume() {
+        this.state = Timer.RUNNING();
+        console.log("Timer is resumed");
+    }
+    
     // Will be written in future
     stop() {
         this.state = Timer.IDLE();
