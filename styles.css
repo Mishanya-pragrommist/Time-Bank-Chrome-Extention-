@@ -422,10 +422,6 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     gap: 10px;
 }
 
-.pause-btn {
-    display: none;
-}
-
 .buttons-block .presets-block {
     display: flex;
     flex-wrap: wrap;
