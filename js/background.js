@@ -3,16 +3,22 @@ import * as Classes from "./classes.js";
 
 // Creating global objects
 // There also will be black list and stuff for workmode 
+
+/* ===================================================================
+   Main.js
+   =================================================================== */
+
 const maintime = new Classes.Time(2, 20, 0);
 const bonustime = new Classes.Time(1, 0, 0);
 const timer = new Classes.Timer(0, 0, 0);
-const startTimerBtnColor = "grey";
-const pauseTimerBtnColor = "red";
-const stopTimerBtnColor = "grey";
-const presetsColor = "orange";
+// Buttons
+let startPauseTimerBtnColor = "grey";
+let stopTimerBtnColor = "grey";
+let presetsColor = "orange";
 
 console.log("Background script started!");
 
+// Convert Time object to seconds
 function timeToSeconds(time) {
     return time.hours * 3600 +
         time.minutes * 60 + 
@@ -22,8 +28,8 @@ function timeToSeconds(time) {
 // Listen requests from main.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
-    // If main.js asks for data
-    if (request.action === "GET_TIME_DATA") {
+    // Send data to main.js
+    if (request.action === "MAIN_GET_TIME_DATA") {
         sendResponse({
             mainSeconds: timeToSeconds(maintime),
             bonusSeconds: timeToSeconds(bonustime),
@@ -31,21 +37,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             timerSeconds: timeToSeconds(timer.time),
             timerState: timer.state,
             
-            startTimerBtnColor: startTimerBtnColor,
-            pauseTimerBtnColor: pauseTimerBtnColor,
+            startPauseTimerBtnColor: startPauseTimerBtnColor,
             stopTimerBtnColor: stopTimerBtnColor,
             presetsColor: presetsColor
         });
     }
     
     // If main.js requests to start timer
-    if (request.action === "START_TIMER") {
+    if (request.action === "MAIN_START_TIMER") {
         timer.start();
         sendResponse({ status: "success" });
     }
     
-    // Ловим нашу команду
-    if (request.action === "UPDATE_TIME_DATA") {
+    // Synchronize data with main.js
+    if (request.action === "MAIN_UPDATE_TIME_DATA") {
         const payload = request.payload;
         
         // Convert received seconds to Time objects
@@ -53,6 +58,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         bonustime.setTime(Classes.secondsToTime(payload.bonusSeconds));
         timer.setTime(Classes.secondsToTime(payload.timerSeconds));
         timer.state = payload.timerState;
+        
+        startPauseTimerBtnColor = payload.startPauseTimerBtnColor;
+        stopTimerBtnColor = payload.stopTimerBtnColor;
+        presetsColor = payload.presetButtonsColor;
         
         console.log("Данные в фоне успешно синхронизированы!");
         console.log("Account: ", maintime.toString(), ", bonus: ", bonustime.toString(), ", timer: ", timer.time.toString());
