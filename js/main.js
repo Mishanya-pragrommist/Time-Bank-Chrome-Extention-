@@ -29,8 +29,7 @@ const cancelButtonWindow = modalWindow.querySelector("[cancel-btn]");
 
 // --- Timer ---
 const timerField = document.querySelector("[timer-js]");
-const startTimerBtn = document.querySelector("[start-timer]");
-const pauseTimerBtn = document.querySelector("[pause-timer]");
+const startPauseTimerBtn = document.querySelector("[start-pause-timer]");
 const stopTimerBtn = document.querySelector("[stop-timer]");
 const presetButtons = document.querySelectorAll("[preset-btn]");
 
@@ -39,20 +38,19 @@ const presetButtons = document.querySelectorAll("[preset-btn]");
    3. HELPER FUNCTIONS
    ========================================================================================================== */
 
-// Sends entered data to background script
-function syncDataWithBackground(datatoSend) {
+// Send entered data to background script
+function syncDataWithBackground() {
     // Pack data into object with numbers
     const dataToSend = {
-        action: "UPDATE_TIME_DATA", // Command for background
+        action: "MAIN_UPDATE_TIME_DATA", // Command for background
         payload: {
             mainSeconds: maintime.toSeconds(),
             bonusSeconds: bonusTime.toSeconds(),
             timerSeconds: timer.hasTime() ? timer.time.toSeconds() : 0,
             timerState: timer.state,
             
-            startTimerBtnColor: startTimerBtn.color,
+            startPauseTimerBtnColor: startPauseTimerBtn.color,
             stopTimerBtnColor: stopTimerBtn.color,
-            pauseTimerBtnColor: pauseTimerBtn.color,
             presetButtonsColor: presetButtons[0].color
         }
     };
@@ -74,8 +72,7 @@ function changeButtonColor(btn, color) {
 
     if (color === "grey") {
         btn.disabled = true;
-    } 
-    else {
+    } else {
         btn.disabled = false;
         btn.classList.add(`${color}-button`);
     }
@@ -95,11 +92,11 @@ function closeModal() {
    4. INITIALIZATION
    ==================================== */
 
-changeButtonColor(startTimerBtn, "grey");
+changeButtonColor(startPauseTimerBtn, "grey");
 changeButtonColor(stopTimerBtn, "grey");
 
 // Get data from background script
-chrome.runtime.sendMessage({ action: "GET_TIME_DATA" }, (response) => {
+chrome.runtime.sendMessage({ action: "MAIN_GET_TIME_DATA" }, (response) => {
     if (response) {
         console.log("Данные из фона получены:", response);
         
@@ -111,9 +108,8 @@ chrome.runtime.sendMessage({ action: "GET_TIME_DATA" }, (response) => {
         bonusAccount.textContent = bonusTime.toString();
         timerField.value = timer.time.toString();
         
-        changeButtonColor(startTimerBtn, response.startTimerBtnColor);
+        changeButtonColor(startPauseTimerBtn, response.startPauseTimerBtnColor);
         changeButtonColor(stopTimerBtn, response.stopTimerBtnColor);
-        changeButtonColor(pauseTimerBtn, response.pauseTimerBtnColor);
         presetButtons.forEach(btn => changeButtonColor(btn, response.presetsColor));
     }
 });
@@ -162,7 +158,7 @@ submitButtonWindow.addEventListener("click", () => {
         closeModal();
         return;
     } 
-    // If account has not enough time
+    // If user tries to add more than 20 minutes
     if (minutes * 60 + seconds > MAX_BONUS_SECONDS) {
         noteText.textContent = "Можно добавить не более 20 минут за раз";
         noteText.style.display = "block";
@@ -225,7 +221,7 @@ timerField.addEventListener("input", () => {
     
     // If timer has no time, block start button
     const hasTimeInTimer = (seconds > 0 || minutes > 0 || hours > 0);
-    changeButtonColor(startTimerBtn, hasTimeInTimer ? "green" : "grey");
+    changeButtonColor(startPauseTimerBtn, hasTimeInTimer ? "green" : "grey");
     
     syncDataWithBackground();
 });
@@ -258,43 +254,41 @@ presetButtons.forEach(btn => {
         // Update UI
         account.textContent = maintime.toString();
         timerField.value = timer.time.toString();
-        changeButtonColor(startTimerBtn, "green");
+        changeButtonColor(startPauseTimerBtn, "green");
         
         syncDataWithBackground();
     });
 });
 
 // Start timer button
-startTimerBtn.addEventListener("click", () => {
-    if (timerField.value === '' || !timer.hasTime()) return; 
+startPauseTimerBtn.addEventListener("click", () => {
+    if (startPauseTimerBtn.textContent === "Пауза") {
+        startPauseTimerBtn.textContent = "Продолжить";
+        changeButtonColor(startPauseTimerBtn, "green");
+        timer.pause();
+        return;
+    } else {
+        startPauseTimerBtn.textContent = "Пауза";
+        changeButtonColor(startPauseTimerBtn, "orange");
+        timer.resume();
+        return;
+    }
     
-    changeButtonColor(startTimerBtn, "grey");
+    if (timerField.value === '' || !timer.hasTime()) return; 
+    // Change buttons states
+    changeButtonColor(startPauseTimerBtn, "oranges");
     changeButtonColor(stopTimerBtn, "red");
     
+    // Now start button is for pause
+    startPauseTimerBtn.textContent = "Пауза";
+    
+    // Disable timer input
     timerField.disabled = true;
-    startTimerBtn.style.display = "none";
     
-    changeButtonColor(pauseTimerBtn, "orange");
-    pauseTimerBtn.style.display = "block";
-    
+    // Disable presets
     presetButtons.forEach(btn => changeButtonColor(btn, "grey"));
     
     timer.start();
-    syncDataWithBackground();
-});
-
-// Pause button
-pauseTimerBtn.addEventListener("click", () => {
-    if (pauseTimerBtn.textContent === "Пауза") {
-        pauseTimerBtn.textContent = "Продолжить";
-        changeButtonColor(pauseTimerBtn, "green");
-        timer.pause();
-    } 
-    else {
-        pauseTimerBtn.textContent = "Пауза";
-        changeButtonColor(pauseTimerBtn, "orange");
-        timer.resume(); 
-    }
     syncDataWithBackground();
 });
 
@@ -318,7 +312,7 @@ stopTimerBtn.addEventListener("click", () => {
     // Hide pause and show start btn
     pauseTimerBtn.style.display = "none";
     pauseTimerBtn.textContent = "Пауза";
-    startTimerBtn.style.display = "block";
+    startPauseTimerBtn.style.display = "block";
     
     // Unblock presets
     presetButtons.forEach(btn => changeButtonColor(btn, "orange"));
