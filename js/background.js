@@ -6,6 +6,10 @@ import * as Classes from "./classes.js";
 const maintime = new Classes.Time(2, 20, 0);
 const bonustime = new Classes.Time(1, 0, 0);
 const timer = new Classes.Timer(0, 0, 0);
+const startTimerBtnColor = "grey";
+const pauseTimerBtnColor = "red";
+const stopTimerBtnColor = "grey";
+const presetsColor = "orange";
 
 console.log("Background script started!");
 
@@ -18,14 +22,19 @@ function timeToSeconds(time) {
 // Listen requests from main.js
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
-    // If main.js asks for time
+    // If main.js asks for data
     if (request.action === "GET_TIME_DATA") {
         sendResponse({
             mainSeconds: timeToSeconds(maintime),
             bonusSeconds: timeToSeconds(bonustime),
             
             timerSeconds: timeToSeconds(timer.time),
-            isTimerRunning: timer.isRunning
+            timerState: timer.state,
+            
+            startTimerBtnColor: startTimerBtnColor,
+            pauseTimerBtnColor: pauseTimerBtnColor,
+            stopTimerBtnColor: stopTimerBtnColor,
+            presetsColor: presetsColor
         });
     }
     
