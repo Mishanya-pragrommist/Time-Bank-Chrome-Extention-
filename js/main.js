@@ -268,11 +268,13 @@ startPauseTimerBtn.addEventListener("click", () => {
         startPauseTimerBtn.textContent = "Продолжить";
         changeButtonColor(startPauseTimerBtn, "green");
         timer.pause();
+        syncDataWithBackground();
         return;
     } else if (startPauseTimerBtn.textContent === "Продолжить") {
         startPauseTimerBtn.textContent = "Пауза";
         changeButtonColor(startPauseTimerBtn, "orange");
         timer.resume();
+        syncDataWithBackground();
         return;
     }
     
