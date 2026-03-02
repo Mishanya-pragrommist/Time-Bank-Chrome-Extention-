@@ -50,6 +50,11 @@ export class Time {
         if (hours !== undefined) this.hours += hours;
     }
     
+    // Add time using Time object
+    addTime(time) {
+        this.add(time.seconds, time.minutes, time.hours);
+    }
+    
     // Substract time. If not enough time, a RangeError is thrown
     substract(seconds, minutes, hours) {
         // If not enough time, throw an error
@@ -76,9 +81,13 @@ export class Time {
         
         if (hours !== undefined && hours > 0)  this.hours -= hours;
     }
+    
+    // Substract time using Time object
+    substractTime(time) {
+        this.substract(time.seconds, time.minutes, time.hours);
+    }
      
-    // Round time to minutes in smaller side.
-    // Basicly, just make seconds 0
+    // Round time to minutes in smaller side
     floor() { this.seconds = 0; }
     
     // Increase time by 1 second
@@ -99,7 +108,7 @@ export class Time {
         if (this.hours <= 0 &&
             this.minutes <= 0 &&
             this.seconds <= 0) {
-            throw new RangeError("Недостаточно времени");
+            throw new RangeError("Time.down(): Недостаточно времени");
         }
         this.seconds--;
         if (this.seconds < 0) {
@@ -185,24 +194,25 @@ export class Timer {
         this.state = Timer.IDLE();
     }
     
-    // Will be written in future
+    // Start timer in separate thread. Will be implemented in future
     start() {
         this.state = Timer.RUNNING();
         console.log("Timer started working. state: ", this.state);
     }
     
-    // Will be written in future
+    // Pause timer. Will be implemented in future
     pause() {
         this.state = Timer.PAUSED();
         console.log("Timer paused. isRunning: ", this.state);
     }
     
+    // Continue timer after pause(). Will be implemented in future
     resume() {
         this.state = Timer.RUNNING();
         console.log("Timer is resumed");
     }
     
-    // Will be written in future
+    // Stop timer if it was running. Will be implemented in future
     stop() {
         this.state = Timer.IDLE();
         console.log("Timer stopped. Rest: ", this.time.toString(), "; state: ", this.state);
