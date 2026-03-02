@@ -50,6 +50,7 @@ function syncDataWithBackground() {
             timerState: timer.state,
             
             startPauseTimerBtnColor: startPauseTimerBtn.color,
+            startPauseTimerBtnText: startPauseTimerBtn.textContent,
             stopTimerBtnColor: stopTimerBtn.color,
             presetButtonsColor: presetButtons[0].color
         }
@@ -107,6 +108,7 @@ chrome.runtime.sendMessage({ action: "MAIN_GET_TIME_DATA" }, (response) => {
         account.textContent = maintime.toString();
         bonusAccount.textContent = bonusTime.toString();
         timerField.value = timer.time.toString();
+        startPauseTimerBtn.textContent = response.startPauseTimerBtnText;
         
         changeButtonColor(startPauseTimerBtn, response.startPauseTimerBtnColor);
         changeButtonColor(stopTimerBtn, response.stopTimerBtnColor);
@@ -267,7 +269,7 @@ startPauseTimerBtn.addEventListener("click", () => {
         changeButtonColor(startPauseTimerBtn, "green");
         timer.pause();
         return;
-    } else {
+    } else if (startPauseTimerBtn.textContent === "Продолжить") {
         startPauseTimerBtn.textContent = "Пауза";
         changeButtonColor(startPauseTimerBtn, "orange");
         timer.resume();
@@ -276,7 +278,7 @@ startPauseTimerBtn.addEventListener("click", () => {
     
     if (timerField.value === '' || !timer.hasTime()) return; 
     // Change buttons states
-    changeButtonColor(startPauseTimerBtn, "oranges");
+    changeButtonColor(startPauseTimerBtn, "orange");
     changeButtonColor(stopTimerBtn, "red");
     
     // Now start button is for pause
@@ -294,14 +296,15 @@ startPauseTimerBtn.addEventListener("click", () => {
 
 // Stop button
 stopTimerBtn.addEventListener("click", () => {
-    if (!timer.hasTime()) return;
+    if (!timer.hasTime()) return; // Just in case
     
-    timerField.disabled = false;
+    timerField.disabled = false; // Unblock timer field
     
     // Return remaining time to account
     maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
     account.textContent = maintime.toString();
     
+    // Stop and reset timer
     timer.reset();
     timer.stop();
     
@@ -309,10 +312,9 @@ stopTimerBtn.addEventListener("click", () => {
     timerField.value = "00:00:00";
     changeButtonColor(stopTimerBtn, "grey"); 
     
-    // Hide pause and show start btn
-    pauseTimerBtn.style.display = "none";
-    pauseTimerBtn.textContent = "Пауза";
-    startPauseTimerBtn.style.display = "block";
+    // Disable startPause button
+    changeButtonColor(startPauseTimerBtn, "grey");
+    startPauseTimerBtn.textContent = "Запустить";
     
     // Unblock presets
     presetButtons.forEach(btn => changeButtonColor(btn, "orange"));

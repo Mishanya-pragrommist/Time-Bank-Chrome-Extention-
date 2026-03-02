@@ -13,6 +13,7 @@ const bonustime = new Classes.Time(1, 0, 0);
 const timer = new Classes.Timer(0, 0, 0);
 // Buttons
 let startPauseTimerBtnColor = "grey";
+let startPauseTimerBtnText = "Запустить";
 let stopTimerBtnColor = "grey";
 let presetsColor = "orange";
 
@@ -38,6 +39,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             timerState: timer.state,
             
             startPauseTimerBtnColor: startPauseTimerBtnColor,
+            startPauseTimerBtnText: startPauseTimerBtnText,
             stopTimerBtnColor: stopTimerBtnColor,
             presetsColor: presetsColor
         });
@@ -60,6 +62,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         timer.state = payload.timerState;
         
         startPauseTimerBtnColor = payload.startPauseTimerBtnColor;
+        startPauseTimerBtnText = payload.startPauseTimerBtnText;
         stopTimerBtnColor = payload.stopTimerBtnColor;
         presetsColor = payload.presetButtonsColor;
         
