@@ -22,19 +22,29 @@
                 <div class="limit light-green light-shadow centered-items">
                     <h1>Ежедневный лимит</h1>
                     <div class="account-and-button">
-                        <div class="account light-shadow" js-account>02:00:00</div>
-                        <button class="green-button">Обновить</button>
+                        <input class="account light-shadow" 
+                               type="time"
+                               step="1"
+                               value="00:00:00"
+                               js-limit>
+                        <button class="green-button" update-limit-btn>Обновить</button>
                     </div>
                 </div>
 
                 <div class="limit light-green light-shadow centered-items">
                     <h1>Размер бонуса</h1>
                     <div class="account-and-button">
-                        <div class="account bonus light-yellow" js-account>02:00:00</div>
-                        <p class="bonus-desc">Максимальный бонус равен размеру ежедневного лимита</p>
+                        <input type="time"
+                               step="1"
+                               value="00:00:00"
+                               class="account bonus light-yellow"
+                               js-bonus-limit>
+                        <button class="green-button update-btn" js-bonus-update>Обновить</button>
                     </div>
+                    <p class="bonus-desc">Максимальный бонус равен размеру ежедневного лимита</p>
                 </div>
             </div>
         </main>
+        <script src="../js/settings.js" type="module"></script>
     </body>
 </html>
