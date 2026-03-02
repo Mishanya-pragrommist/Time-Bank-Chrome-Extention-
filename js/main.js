@@ -202,14 +202,14 @@ timerField.addEventListener("input", () => {
     
     // Return old time to balance
     if (timer.hasTime()) {
-        maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
+        maintime.addTime(timer.time);
     }
 
     const newInputSeconds = hours * 3600 + minutes * 60 + seconds;
     
     // Check balance
     if (maintime.toSeconds() < newInputSeconds) {
-        maintime.substract(timer.time.seconds, timer.time.minutes, timer.time.hours);
+        maintime.substractTime(timer.time);
         timerField.value = timer.time.toString(); 
         return;
     }
@@ -234,7 +234,7 @@ presetButtons.forEach(btn => {
         const presetValue = Number(btn.value); // Value in minutes
         
         if (timer.hasTime()) {
-            maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
+            maintime.addTime(timer.time);
             timer.reset();
         }
         
@@ -303,7 +303,7 @@ stopTimerBtn.addEventListener("click", () => {
     timerField.disabled = false; // Unblock timer field
     
     // Return remaining time to account
-    maintime.add(timer.time.seconds, timer.time.minutes, timer.time.hours);
+    maintime.addTime(timer.time);
     account.textContent = maintime.toString();
     
     // Stop and reset timer
